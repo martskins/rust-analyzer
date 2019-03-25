@@ -24,11 +24,6 @@
 <span id="24">24</span>
 <span id="25">25</span>
 <span id="26">26</span>
-<span id="27">27</span>
-<span id="28">28</span>
-<span id="29">29</span>
-<span id="30">30</span>
-<span id="31">31</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">ra_db</span>::{<span class="ident">FileRange</span>, <span class="ident">FilePosition</span>};
 
@@ -49,14 +44,9 @@
             <span class="kw">let</span> <span class="ident">file_id</span> <span class="op">=</span> <span class="ident">frange</span>.<span class="ident">file_id</span>;
             <span class="kw">let</span> <span class="ident">file_edit</span> <span class="op">=</span> <span class="ident">SourceFileEdit</span> { <span class="ident">file_id</span>, <span class="ident">edit</span>: <span class="ident">action</span>.<span class="ident">edit</span> };
             <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">label</span>.<span class="ident">id</span>;
-            <span class="kw">let</span> <span class="ident">change</span> <span class="op">=</span> <span class="ident">SourceChange</span> {
-                <span class="ident">label</span>: <span class="ident">label</span>.<span class="ident">label</span>,
-                <span class="ident">source_file_edits</span>: <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">file_edit</span>],
-                <span class="ident">file_system_edits</span>: <span class="macro">vec</span><span class="macro">!</span>[],
-                <span class="ident">cursor_position</span>: <span class="ident">action</span>
-                    .<span class="ident">cursor_position</span>
-                    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">offset</span><span class="op">|</span> <span class="ident">FilePosition</span> { <span class="ident">offset</span>, <span class="ident">file_id</span> }),
-            };
+            <span class="kw">let</span> <span class="ident">change</span> <span class="op">=</span> <span class="ident">SourceChange</span>::<span class="ident">source_file_edit</span>(<span class="ident">label</span>.<span class="ident">label</span>, <span class="ident">file_edit</span>).<span class="ident">with_cursor_opt</span>(
+                <span class="ident">action</span>.<span class="ident">cursor_position</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">offset</span><span class="op">|</span> <span class="ident">FilePosition</span> { <span class="ident">offset</span>, <span class="ident">file_id</span> }),
+            );
             <span class="ident">Assist</span> { <span class="ident">id</span>, <span class="ident">change</span> }
         })
         .<span class="ident">collect</span>()

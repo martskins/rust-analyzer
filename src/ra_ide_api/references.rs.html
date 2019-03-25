@@ -346,16 +346,6 @@
 <span id="346">346</span>
 <span id="347">347</span>
 <span id="348">348</span>
-<span id="349">349</span>
-<span id="350">350</span>
-<span id="351">351</span>
-<span id="352">352</span>
-<span id="353">353</span>
-<span id="354">354</span>
-<span id="355">355</span>
-<span id="356">356</span>
-<span id="357">357</span>
-<span id="358">358</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">relative_path</span>::{<span class="ident">RelativePath</span>, <span class="ident">RelativePathBuf</span>};
 <span class="kw">use</span> <span class="ident">hir</span>::{<span class="ident">ModuleSource</span>, <span class="ident">source_binder</span>};
@@ -546,12 +536,7 @@
     };
     <span class="ident">source_file_edits</span>.<span class="ident">push</span>(<span class="ident">edit</span>);
 
-    <span class="prelude-val">Some</span>(<span class="ident">SourceChange</span> {
-        <span class="ident">label</span>: <span class="string">&quot;rename&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">source_file_edits</span>,
-        <span class="ident">file_system_edits</span>,
-        <span class="ident">cursor_position</span>: <span class="prelude-val">None</span>,
-    })
+    <span class="prelude-val">Some</span>(<span class="ident">SourceChange</span>::<span class="ident">from_edits</span>(<span class="string">&quot;rename&quot;</span>, <span class="ident">source_file_edits</span>, <span class="ident">file_system_edits</span>))
 }
 
 <span class="kw">fn</span> <span class="ident">rename_reference</span>(
@@ -570,12 +555,7 @@
         <span class="kw">return</span> <span class="prelude-val">None</span>;
     }
 
-    <span class="prelude-val">Some</span>(<span class="ident">SourceChange</span> {
-        <span class="ident">label</span>: <span class="string">&quot;rename&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">source_file_edits</span>: <span class="ident">edit</span>,
-        <span class="ident">file_system_edits</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-        <span class="ident">cursor_position</span>: <span class="prelude-val">None</span>,
-    })
+    <span class="prelude-val">Some</span>(<span class="ident">SourceChange</span>::<span class="ident">source_file_edits</span>(<span class="string">&quot;rename&quot;</span>, <span class="ident">edit</span>))
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>

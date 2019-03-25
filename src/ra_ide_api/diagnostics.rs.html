@@ -283,15 +283,6 @@
 <span id="283">283</span>
 <span id="284">284</span>
 <span id="285">285</span>
-<span id="286">286</span>
-<span id="287">287</span>
-<span id="288">288</span>
-<span id="289">289</span>
-<span id="290">290</span>
-<span id="291">291</span>
-<span id="292">292</span>
-<span id="293">293</span>
-<span id="294">294</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
 <span class="kw">use</span> <span class="ident">hir</span>::{<span class="ident">Problem</span>, <span class="ident">source_binder</span>};
@@ -366,12 +357,10 @@
             <span class="ident">range</span>,
             <span class="ident">message</span>: <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Unnecessary braces in use statement&quot;</span>),
             <span class="ident">severity</span>: <span class="ident">Severity</span>::<span class="ident">WeakWarning</span>,
-            <span class="ident">fix</span>: <span class="prelude-val">Some</span>(<span class="ident">SourceChange</span> {
-                <span class="ident">label</span>: <span class="string">&quot;Remove unnecessary braces&quot;</span>.<span class="ident">to_string</span>(),
-                <span class="ident">source_file_edits</span>: <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">SourceFileEdit</span> { <span class="ident">file_id</span>, <span class="ident">edit</span> }],
-                <span class="ident">file_system_edits</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-                <span class="ident">cursor_position</span>: <span class="prelude-val">None</span>,
-            }),
+            <span class="ident">fix</span>: <span class="prelude-val">Some</span>(<span class="ident">SourceChange</span>::<span class="ident">source_file_edit</span>(
+                <span class="string">&quot;Remove unnecessary braces&quot;</span>,
+                <span class="ident">SourceFileEdit</span> { <span class="ident">file_id</span>, <span class="ident">edit</span> },
+            )),
         });
     }
 
@@ -414,12 +403,10 @@
                     <span class="ident">range</span>: <span class="ident">named_field</span>.<span class="ident">syntax</span>().<span class="ident">range</span>(),
                     <span class="ident">message</span>: <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Shorthand struct initialization&quot;</span>),
                     <span class="ident">severity</span>: <span class="ident">Severity</span>::<span class="ident">WeakWarning</span>,
-                    <span class="ident">fix</span>: <span class="prelude-val">Some</span>(<span class="ident">SourceChange</span> {
-                        <span class="ident">label</span>: <span class="string">&quot;use struct shorthand initialization&quot;</span>.<span class="ident">to_string</span>(),
-                        <span class="ident">source_file_edits</span>: <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">SourceFileEdit</span> { <span class="ident">file_id</span>, <span class="ident">edit</span> }],
-                        <span class="ident">file_system_edits</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-                        <span class="ident">cursor_position</span>: <span class="prelude-val">None</span>,
-                    }),
+                    <span class="ident">fix</span>: <span class="prelude-val">Some</span>(<span class="ident">SourceChange</span>::<span class="ident">source_file_edit</span>(
+                        <span class="string">&quot;use struct shorthand initialization&quot;</span>,
+                        <span class="ident">SourceFileEdit</span> { <span class="ident">file_id</span>, <span class="ident">edit</span> },
+                    )),
                 });
             }
         }
@@ -439,12 +426,7 @@
             <span class="ident">Problem</span>::<span class="ident">UnresolvedModule</span> { <span class="ident">candidate</span> } <span class="op">=&gt;</span> {
                 <span class="kw">let</span> <span class="ident">create_file</span> <span class="op">=</span>
                     <span class="ident">FileSystemEdit</span>::<span class="ident">CreateFile</span> { <span class="ident">source_root</span>, <span class="ident">path</span>: <span class="ident">candidate</span>.<span class="ident">clone</span>() };
-                <span class="kw">let</span> <span class="ident">fix</span> <span class="op">=</span> <span class="ident">SourceChange</span> {
-                    <span class="ident">label</span>: <span class="string">&quot;create module&quot;</span>.<span class="ident">to_string</span>(),
-                    <span class="ident">source_file_edits</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-                    <span class="ident">file_system_edits</span>: <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">create_file</span>],
-                    <span class="ident">cursor_position</span>: <span class="prelude-val">None</span>,
-                };
+                <span class="kw">let</span> <span class="ident">fix</span> <span class="op">=</span> <span class="ident">SourceChange</span>::<span class="ident">file_system_edit</span>(<span class="string">&quot;create module&quot;</span>, <span class="ident">create_file</span>);
                 <span class="ident">Diagnostic</span> {
                     <span class="ident">range</span>: <span class="ident">name_node</span>.<span class="ident">range</span>(),
                     <span class="ident">message</span>: <span class="string">&quot;unresolved module&quot;</span>.<span class="ident">to_string</span>(),
