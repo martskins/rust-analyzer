@@ -1,7 +1,0 @@
-SOURCE_FILE@[0; 42)
-  SHEBANG@[0; 20)
-  WHITESPACE@[20; 21)
-  err: `expected an item`
-  ERROR@[21; 41)
-    SHEBANG@[21; 41)
-  WHITESPACE@[41; 42)

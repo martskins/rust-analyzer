@@ -1,7 +1,0 @@
-/target/
-crates/*/target
-**/*.rs.bk
-.idea/*
-*.log
-*.iml
-.vscode/settings.json

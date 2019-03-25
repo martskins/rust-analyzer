@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["applicable_assists","Return all the assists applicable at the given position."],["assists","Return all the assists applicable at the given position."]],"struct":[["AssistAction",""],["AssistId","Unique identifier of the assist, should not be shown to the user directly."],["AssistLabel",""]]});
