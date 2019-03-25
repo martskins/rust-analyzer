@@ -9,7 +9,6 @@ ALIASES["ra_db"] = {};
 ALIASES["ra_fmt"] = {};
 ALIASES["ra_hir"] = {};
 ALIASES["ra_ide_api"] = {};
-ALIASES["ra_ide_api_light"] = {};
 ALIASES["ra_lsp_server"] = {};
 ALIASES["ra_mbe"] = {};
 ALIASES["ra_parser"] = {};
