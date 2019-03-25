@@ -104,6 +104,13 @@
 <span id="104">104</span>
 <span id="105">105</span>
 <span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
@@ -121,6 +128,7 @@
     <span class="ident">impl_block</span>::{<span class="ident">ModuleImplBlocks</span>, <span class="ident">ImplSourceMap</span>},
     <span class="ident">generics</span>::{<span class="ident">GenericParams</span>, <span class="ident">GenericDef</span>},
     <span class="ident">type_ref</span>::<span class="ident">TypeRef</span>,
+    <span class="ident">traits</span>::<span class="ident">TraitData</span>, <span class="ident">Trait</span>, <span class="ident">ty</span>::<span class="ident">TraitRef</span>
 };
 
 <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">query_group</span>(<span class="ident">DefDatabaseStorage</span>)]</span>
@@ -133,6 +141,9 @@
 
     <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">invoke</span>(<span class="kw">crate</span>::<span class="ident">adt</span>::<span class="ident">EnumData</span>::<span class="ident">enum_data_query</span>)]</span>
     <span class="kw">fn</span> <span class="ident">enum_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">e</span>: <span class="ident">Enum</span>) <span class="op">-&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">EnumData</span><span class="op">&gt;</span>;
+
+    <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">invoke</span>(<span class="kw">crate</span>::<span class="ident">traits</span>::<span class="ident">TraitData</span>::<span class="ident">trait_data_query</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">trait_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">t</span>: <span class="ident">Trait</span>) <span class="op">-&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">TraitData</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">invoke</span>(<span class="kw">crate</span>::<span class="ident">ids</span>::<span class="ident">SourceFileItems</span>::<span class="ident">file_items_query</span>)]</span>
     <span class="kw">fn</span> <span class="ident">file_items</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file_id</span>: <span class="ident">HirFileId</span>) <span class="op">-&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">SourceFileItems</span><span class="op">&gt;</span>;
@@ -205,6 +216,9 @@
 
     <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">invoke</span>(<span class="kw">crate</span>::<span class="ident">ty</span>::<span class="ident">method_resolution</span>::<span class="ident">CrateImplBlocks</span>::<span class="ident">impls_in_crate_query</span>)]</span>
     <span class="kw">fn</span> <span class="ident">impls_in_crate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">krate</span>: <span class="ident">Crate</span>) <span class="op">-&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CrateImplBlocks</span><span class="op">&gt;</span>;
+
+    <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">invoke</span>(<span class="kw">crate</span>::<span class="ident">ty</span>::<span class="ident">method_resolution</span>::<span class="ident">implements</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">implements</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">trait_ref</span>: <span class="ident">TraitRef</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>;
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>

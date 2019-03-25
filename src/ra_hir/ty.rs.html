@@ -416,6 +416,21 @@
 <span id="416">416</span>
 <span id="417">417</span>
 <span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The type system. We currently use this to infer types for completion, hover</span>
 <span class="doccomment">//! information and various assists.</span>
@@ -433,7 +448,7 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">mem</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Name</span>, <span class="ident">AdtDef</span>, <span class="ident">type_ref</span>::<span class="ident">Mutability</span>, <span class="ident">db</span>::<span class="ident">HirDatabase</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Name</span>, <span class="ident">AdtDef</span>, <span class="ident">type_ref</span>::<span class="ident">Mutability</span>, <span class="ident">db</span>::<span class="ident">HirDatabase</span>, <span class="ident">Trait</span>};
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">lower</span>::{<span class="ident">TypableDef</span>, <span class="ident">CallableDef</span>, <span class="ident">type_for_def</span>, <span class="ident">type_for_field</span>, <span class="ident">callable_item_sig</span>};
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">infer</span>::{<span class="ident">infer</span>, <span class="ident">InferenceResult</span>, <span class="ident">InferTy</span>};
@@ -510,7 +525,7 @@
 <span class="doccomment">/// A nominal type with (maybe 0) type parameters. This might be a primitive</span>
 <span class="doccomment">/// type like `bool`, a struct, tuple, function pointer, reference or</span>
 <span class="doccomment">/// several other things.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>, <span class="ident">Hash</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ApplicationTy</span> {
     <span class="kw">pub</span> <span class="ident">ctor</span>: <span class="ident">TypeCtor</span>,
     <span class="kw">pub</span> <span class="ident">parameters</span>: <span class="ident">Substs</span>,
@@ -522,7 +537,7 @@
 <span class="doccomment">/// the same thing (but in a different way).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This should be cheap to clone.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>, <span class="ident">Hash</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Ty</span> {
     <span class="doccomment">/// A nominal type with (maybe 0) type parameters. This might be a primitive</span>
     <span class="doccomment">/// type like `bool`, a struct, tuple, function pointer, reference or</span>
@@ -551,7 +566,7 @@
 }
 
 <span class="doccomment">/// A list of substitutions for generic parameters.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>, <span class="ident">Hash</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Substs</span>(<span class="ident">Arc</span><span class="op">&lt;</span>[<span class="ident">Ty</span>]<span class="op">&gt;</span>);
 
 <span class="kw">impl</span> <span class="ident">Substs</span> {
@@ -585,6 +600,21 @@
             <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;expected substs of len 1, got {:?}&quot;</span>, <span class="self">self</span>);
         }
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>[<span class="number">0</span>]
+    }
+}
+
+<span class="doccomment">/// A trait with type parameters. This includes the `Self`, so this represents a concrete type implementing the trait.</span>
+<span class="doccomment">/// Name to be bikeshedded: TraitBound? TraitImplements?</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>, <span class="ident">Hash</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TraitRef</span> {
+    <span class="doccomment">/// FIXME name?</span>
+    <span class="ident">trait_</span>: <span class="ident">Trait</span>,
+    <span class="ident">substs</span>: <span class="ident">Substs</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">TraitRef</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">self_ty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Ty</span> {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">substs</span>.<span class="number">0</span>[<span class="number">0</span>]
     }
 }
 
