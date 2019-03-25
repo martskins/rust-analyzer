@@ -74,6 +74,12 @@
 <span id="74">74</span>
 <span id="75">75</span>
 <span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
 
@@ -138,6 +144,12 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">syntax_node_ptr</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">SyntaxNodePtr</span> {
         <span class="self">self</span>.<span class="ident">raw</span>
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>: <span class="ident">AstNode</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">AstPtr</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">SyntaxNodePtr</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">ptr</span>: <span class="ident">AstPtr</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">SyntaxNodePtr</span> {
+        <span class="ident">ptr</span>.<span class="ident">raw</span>
     }
 }
 

@@ -689,12 +689,26 @@
 <span id="689">689</span>
 <span id="690">690</span>
 <span id="691">691</span>
+<span id="692">692</span>
+<span id="693">693</span>
+<span id="694">694</span>
+<span id="695">695</span>
+<span id="696">696</span>
+<span id="697">697</span>
+<span id="698">698</span>
+<span id="699">699</span>
+<span id="700">700</span>
+<span id="701">701</span>
+<span id="702">702</span>
+<span id="703">703</span>
+<span id="704">704</span>
+<span id="705">705</span>
+<span id="706">706</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
-<span class="kw">use</span> <span class="ident">relative_path</span>::<span class="ident">RelativePathBuf</span>;
 <span class="kw">use</span> <span class="ident">ra_db</span>::{<span class="ident">CrateId</span>, <span class="ident">SourceRootId</span>, <span class="ident">Edition</span>};
-<span class="kw">use</span> <span class="ident">ra_syntax</span>::{<span class="ident">ast</span>::<span class="self">self</span>, <span class="ident">TreeArc</span>, <span class="ident">SyntaxNode</span>};
+<span class="kw">use</span> <span class="ident">ra_syntax</span>::{<span class="ident">ast</span>::<span class="self">self</span>, <span class="ident">TreeArc</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">Name</span>, <span class="ident">ScopesWithSourceMap</span>, <span class="ident">Ty</span>, <span class="ident">HirFileId</span>,
@@ -709,6 +723,7 @@
     <span class="ident">ids</span>::{<span class="ident">FunctionId</span>, <span class="ident">StructId</span>, <span class="ident">EnumId</span>, <span class="ident">AstItemDef</span>, <span class="ident">ConstId</span>, <span class="ident">StaticId</span>, <span class="ident">TraitId</span>, <span class="ident">TypeId</span>},
     <span class="ident">impl_block</span>::<span class="ident">ImplBlock</span>,
     <span class="ident">resolve</span>::<span class="ident">Resolver</span>,
+    <span class="ident">diagnostics</span>::<span class="ident">DiagnosticSink</span>,
 };
 
 <span class="doccomment">/// hir::Crate describes a single crate. It&#39;s the main interface with which</span>
@@ -787,11 +802,6 @@
     <span class="ident">Module</span>(<span class="ident">TreeArc</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">Module</span><span class="op">&gt;</span>),
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Hash</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Problem</span> {
-    <span class="ident">UnresolvedModule</span> { <span class="ident">candidate</span>: <span class="ident">RelativePathBuf</span> },
-}
-
 <span class="kw">impl</span> <span class="ident">Module</span> {
     <span class="doccomment">/// Name of this module.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">HirDatabase</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Name</span><span class="op">&gt;</span> {
@@ -863,8 +873,24 @@
         <span class="ident">db</span>.<span class="ident">crate_def_map</span>(<span class="self">self</span>.<span class="ident">krate</span>)[<span class="self">self</span>.<span class="ident">module_id</span>].<span class="ident">scope</span>.<span class="ident">clone</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">problems</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">HirDatabase</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">TreeArc</span><span class="op">&lt;</span><span class="ident">SyntaxNode</span><span class="op">&gt;</span>, <span class="ident">Problem</span>)<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">problems_impl</span>(<span class="ident">db</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">diagnostics</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">HirDatabase</span>, <span class="ident">sink</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">DiagnosticSink</span>) {
+        <span class="ident">db</span>.<span class="ident">crate_def_map</span>(<span class="self">self</span>.<span class="ident">krate</span>).<span class="ident">add_diagnostics</span>(<span class="ident">db</span>, <span class="self">self</span>.<span class="ident">module_id</span>, <span class="ident">sink</span>);
+        <span class="kw">for</span> <span class="ident">decl</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">declarations</span>(<span class="ident">db</span>) {
+            <span class="kw">match</span> <span class="ident">decl</span> {
+                <span class="kw">crate</span>::<span class="ident">ModuleDef</span>::<span class="ident">Function</span>(<span class="ident">f</span>) <span class="op">=&gt;</span> <span class="ident">f</span>.<span class="ident">diagnostics</span>(<span class="ident">db</span>, <span class="ident">sink</span>),
+                <span class="kw">crate</span>::<span class="ident">ModuleDef</span>::<span class="ident">Module</span>(<span class="ident">f</span>) <span class="op">=&gt;</span> <span class="ident">f</span>.<span class="ident">diagnostics</span>(<span class="ident">db</span>, <span class="ident">sink</span>),
+                <span class="kw">_</span> <span class="op">=&gt;</span> (),
+            }
+        }
+
+        <span class="kw">for</span> <span class="ident">impl_block</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">impl_blocks</span>(<span class="ident">db</span>) {
+            <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="ident">impl_block</span>.<span class="ident">items</span>(<span class="ident">db</span>) {
+                <span class="kw">match</span> <span class="ident">item</span> {
+                    <span class="kw">crate</span>::<span class="ident">ImplItem</span>::<span class="ident">Method</span>(<span class="ident">f</span>) <span class="op">=&gt;</span> <span class="ident">f</span>.<span class="ident">diagnostics</span>(<span class="ident">db</span>, <span class="ident">sink</span>),
+                    <span class="kw">_</span> <span class="op">=&gt;</span> (),
+                }
+            }
+        }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resolver</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">HirDatabase</span>) <span class="op">-&gt;</span> <span class="ident">Resolver</span> {
@@ -1210,6 +1236,10 @@
         <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">generic_params</span>(<span class="ident">db</span>);
         <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">p</span>.<span class="ident">params</span>.<span class="ident">is_empty</span>() { <span class="ident">r</span>.<span class="ident">push_generic_params_scope</span>(<span class="ident">p</span>) } <span class="kw">else</span> { <span class="ident">r</span> };
         <span class="ident">r</span>
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">diagnostics</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">HirDatabase</span>, <span class="ident">sink</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">DiagnosticSink</span>) {
+        <span class="self">self</span>.<span class="ident">infer</span>(<span class="ident">db</span>).<span class="ident">add_diagnostics</span>(<span class="ident">db</span>, <span class="kw-2">*</span><span class="self">self</span>, <span class="ident">sink</span>);
     }
 }
 
