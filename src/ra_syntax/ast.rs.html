@@ -784,6 +784,18 @@
 <span id="784">784</span>
 <span id="785">785</span>
 <span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Abstract Syntax Tree, layered on top of untyped `SyntaxNode`s</span>
 <span class="kw">mod</span> <span class="ident">generated</span>;
@@ -1308,13 +1320,17 @@
 }
 
 <span class="kw">impl</span> <span class="ident">PrefixExpr</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">op</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PrefixOp</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">op_kind</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PrefixOp</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">syntax</span>().<span class="ident">first_child</span>()<span class="question-mark">?</span>.<span class="ident">kind</span>() {
             <span class="ident">STAR</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">PrefixOp</span>::<span class="ident">Deref</span>),
             <span class="ident">EXCL</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">PrefixOp</span>::<span class="ident">Not</span>),
             <span class="ident">MINUS</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">PrefixOp</span>::<span class="ident">Neg</span>),
             <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
         }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">op</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SyntaxNode</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">syntax</span>().<span class="ident">first_child</span>()
     }
 }
 
@@ -1385,44 +1401,52 @@
 }
 
 <span class="kw">impl</span> <span class="ident">BinExpr</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">op</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BinOp</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">op_details</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="ident">SyntaxNode</span>, <span class="ident">BinOp</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">syntax</span>()
             .<span class="ident">children</span>()
             .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">c</span>.<span class="ident">kind</span>() {
-                <span class="ident">PIPEPIPE</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">BooleanOr</span>),
-                <span class="ident">AMPAMP</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">BooleanAnd</span>),
-                <span class="ident">EQEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">EqualityTest</span>),
-                <span class="ident">NEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">NegatedEqualityTest</span>),
-                <span class="ident">LTEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">LesserEqualTest</span>),
-                <span class="ident">GTEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">GreaterEqualTest</span>),
-                <span class="ident">L_ANGLE</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">LesserTest</span>),
-                <span class="ident">R_ANGLE</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">GreaterTest</span>),
-                <span class="ident">PLUS</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">Addition</span>),
-                <span class="ident">STAR</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">Multiplication</span>),
-                <span class="ident">MINUS</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">Subtraction</span>),
-                <span class="ident">SLASH</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">Division</span>),
-                <span class="ident">PERCENT</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">Remainder</span>),
-                <span class="ident">SHL</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">LeftShift</span>),
-                <span class="ident">SHR</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">RightShift</span>),
-                <span class="ident">CARET</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">BitwiseXor</span>),
-                <span class="ident">PIPE</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">BitwiseOr</span>),
-                <span class="ident">AMP</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">BitwiseAnd</span>),
-                <span class="ident">DOTDOT</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">RangeRightOpen</span>),
-                <span class="ident">DOTDOTEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">RangeRightClosed</span>),
-                <span class="ident">EQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">Assignment</span>),
-                <span class="ident">PLUSEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">AddAssign</span>),
-                <span class="ident">SLASHEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">DivAssign</span>),
-                <span class="ident">STAREQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">MulAssign</span>),
-                <span class="ident">PERCENTEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">RemAssign</span>),
-                <span class="ident">SHREQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">ShrAssign</span>),
-                <span class="ident">SHLEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">ShlAssign</span>),
-                <span class="ident">MINUSEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">SubAssign</span>),
-                <span class="ident">PIPEEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">BitOrAssign</span>),
-                <span class="ident">AMPEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">BitAndAssign</span>),
-                <span class="ident">CARETEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">BinOp</span>::<span class="ident">BitXorAssign</span>),
+                <span class="ident">PIPEPIPE</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">BooleanOr</span>)),
+                <span class="ident">AMPAMP</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">BooleanAnd</span>)),
+                <span class="ident">EQEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">EqualityTest</span>)),
+                <span class="ident">NEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">NegatedEqualityTest</span>)),
+                <span class="ident">LTEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">LesserEqualTest</span>)),
+                <span class="ident">GTEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">GreaterEqualTest</span>)),
+                <span class="ident">L_ANGLE</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">LesserTest</span>)),
+                <span class="ident">R_ANGLE</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">GreaterTest</span>)),
+                <span class="ident">PLUS</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">Addition</span>)),
+                <span class="ident">STAR</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">Multiplication</span>)),
+                <span class="ident">MINUS</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">Subtraction</span>)),
+                <span class="ident">SLASH</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">Division</span>)),
+                <span class="ident">PERCENT</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">Remainder</span>)),
+                <span class="ident">SHL</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">LeftShift</span>)),
+                <span class="ident">SHR</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">RightShift</span>)),
+                <span class="ident">CARET</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">BitwiseXor</span>)),
+                <span class="ident">PIPE</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">BitwiseOr</span>)),
+                <span class="ident">AMP</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">BitwiseAnd</span>)),
+                <span class="ident">DOTDOT</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">RangeRightOpen</span>)),
+                <span class="ident">DOTDOTEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">RangeRightClosed</span>)),
+                <span class="ident">EQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">Assignment</span>)),
+                <span class="ident">PLUSEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">AddAssign</span>)),
+                <span class="ident">SLASHEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">DivAssign</span>)),
+                <span class="ident">STAREQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">MulAssign</span>)),
+                <span class="ident">PERCENTEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">RemAssign</span>)),
+                <span class="ident">SHREQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">ShrAssign</span>)),
+                <span class="ident">SHLEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">ShlAssign</span>)),
+                <span class="ident">MINUSEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">SubAssign</span>)),
+                <span class="ident">PIPEEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">BitOrAssign</span>)),
+                <span class="ident">AMPEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">BitAndAssign</span>)),
+                <span class="ident">CARETEQ</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">c</span>, <span class="ident">BinOp</span>::<span class="ident">BitXorAssign</span>)),
                 <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
             })
             .<span class="ident">next</span>()
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">op_kind</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BinOp</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">op_details</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="number">1</span>)
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">op</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">SyntaxNode</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">op_details</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="number">0</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lhs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Expr</span><span class="op">&gt;</span> {

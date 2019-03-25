@@ -320,6 +320,8 @@
 <span id="320">320</span>
 <span id="321">321</span>
 <span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! `ra_assits` crate provides a bunch of code assists, also known as code</span>
 <span class="doccomment">//! actions (in LSP) or intentions (in IntelliJ).</span>
@@ -411,6 +413,7 @@
 <span class="kw">mod</span> <span class="ident">add_derive</span>;
 <span class="kw">mod</span> <span class="ident">add_impl</span>;
 <span class="kw">mod</span> <span class="ident">flip_comma</span>;
+<span class="kw">mod</span> <span class="ident">flip_eq_operands</span>;
 <span class="kw">mod</span> <span class="ident">change_visibility</span>;
 <span class="kw">mod</span> <span class="ident">fill_match_arms</span>;
 <span class="kw">mod</span> <span class="ident">fill_struct_fields</span>;
@@ -429,6 +432,7 @@
         <span class="ident">fill_match_arms</span>::<span class="ident">fill_match_arms</span>,
         <span class="ident">fill_struct_fields</span>::<span class="ident">fill_struct_fields</span>,
         <span class="ident">flip_comma</span>::<span class="ident">flip_comma</span>,
+        <span class="ident">flip_eq_operands</span>::<span class="ident">flip_eq_operands</span>,
         <span class="ident">introduce_variable</span>::<span class="ident">introduce_variable</span>,
         <span class="ident">replace_if_let_with_match</span>::<span class="ident">replace_if_let_with_match</span>,
         <span class="ident">split_import</span>::<span class="ident">split_import</span>,
