@@ -111,14 +111,20 @@
 <span id="111">111</span>
 <span id="112">112</span>
 <span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
 <span class="kw">use</span> <span class="ident">ra_syntax</span>::{<span class="ident">SyntaxNode</span>, <span class="ident">TreeArc</span>, <span class="ident">SourceFile</span>};
-<span class="kw">use</span> <span class="ident">ra_db</span>::{<span class="ident">SourceDatabase</span>, <span class="ident">salsa</span>, <span class="ident">FileId</span>};
+<span class="kw">use</span> <span class="ident">ra_db</span>::{<span class="ident">SourceDatabase</span>, <span class="ident">salsa</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">HirFileId</span>, <span class="ident">SourceFileItems</span>, <span class="ident">SourceItemId</span>, <span class="ident">Crate</span>, <span class="ident">Module</span>, <span class="ident">HirInterner</span>,
+    <span class="ident">HirFileId</span>, <span class="ident">MacroDefId</span>, <span class="ident">SourceFileItems</span>, <span class="ident">SourceItemId</span>, <span class="ident">Crate</span>, <span class="ident">Module</span>, <span class="ident">HirInterner</span>,
     <span class="ident">Function</span>, <span class="ident">FnSignature</span>, <span class="ident">ExprScopes</span>, <span class="ident">TypeAlias</span>,
     <span class="ident">Struct</span>, <span class="ident">Enum</span>, <span class="ident">StructField</span>,
     <span class="ident">Const</span>, <span class="ident">ConstSignature</span>, <span class="ident">Static</span>,
@@ -133,6 +139,9 @@
 
 <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">query_group</span>(<span class="ident">DefDatabaseStorage</span>)]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">DefDatabase</span>: <span class="ident">SourceDatabase</span> <span class="op">+</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">HirInterner</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">invoke</span>(<span class="kw">crate</span>::<span class="ident">ids</span>::<span class="ident">macro_def_query</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">macro_def</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">macro_id</span>: <span class="ident">MacroDefId</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">mbe</span>::<span class="ident">MacroRules</span><span class="op">&gt;&gt;</span>;
+
     <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">invoke</span>(<span class="ident">HirFileId</span>::<span class="ident">hir_parse</span>)]</span>
     <span class="kw">fn</span> <span class="ident">hir_parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file_id</span>: <span class="ident">HirFileId</span>) <span class="op">-&gt;</span> <span class="ident">TreeArc</span><span class="op">&lt;</span><span class="ident">SourceFile</span><span class="op">&gt;</span>;
 
@@ -152,10 +161,13 @@
     <span class="kw">fn</span> <span class="ident">file_item</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">source_item_id</span>: <span class="ident">SourceItemId</span>) <span class="op">-&gt;</span> <span class="ident">TreeArc</span><span class="op">&lt;</span><span class="ident">SyntaxNode</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">invoke</span>(<span class="ident">RawItems</span>::<span class="ident">raw_items_query</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">raw_items</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file_id</span>: <span class="ident">FileId</span>) <span class="op">-&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RawItems</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">raw_items</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file_id</span>: <span class="ident">HirFileId</span>) <span class="op">-&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RawItems</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">invoke</span>(<span class="ident">RawItems</span>::<span class="ident">raw_items_with_source_map_query</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">raw_items_with_source_map</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file_id</span>: <span class="ident">FileId</span>) <span class="op">-&gt;</span> (<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RawItems</span><span class="op">&gt;</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ImportSourceMap</span><span class="op">&gt;</span>);
+    <span class="kw">fn</span> <span class="ident">raw_items_with_source_map</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">file_id</span>: <span class="ident">HirFileId</span>,
+    ) <span class="op">-&gt;</span> (<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RawItems</span><span class="op">&gt;</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ImportSourceMap</span><span class="op">&gt;</span>);
 
     <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">invoke</span>(<span class="ident">CrateDefMap</span>::<span class="ident">crate_def_map_query</span>)]</span>
     <span class="kw">fn</span> <span class="ident">crate_def_map</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">krate</span>: <span class="ident">Crate</span>) <span class="op">-&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CrateDefMap</span><span class="op">&gt;</span>;
