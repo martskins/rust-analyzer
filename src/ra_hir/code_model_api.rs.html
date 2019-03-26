@@ -733,7 +733,7 @@
     <span class="ident">adt</span>::{<span class="ident">EnumVariantId</span>, <span class="ident">StructFieldId</span>, <span class="ident">VariantDef</span>},
     <span class="ident">generics</span>::<span class="ident">GenericParams</span>,
     <span class="ident">docs</span>::{<span class="ident">Documentation</span>, <span class="ident">Docs</span>, <span class="ident">docs_from_ast</span>},
-    <span class="ident">ids</span>::{<span class="ident">FunctionId</span>, <span class="ident">StructId</span>, <span class="ident">EnumId</span>, <span class="ident">AstItemDef</span>, <span class="ident">ConstId</span>, <span class="ident">StaticId</span>, <span class="ident">TraitId</span>, <span class="ident">TypeId</span>},
+    <span class="ident">ids</span>::{<span class="ident">FunctionId</span>, <span class="ident">StructId</span>, <span class="ident">EnumId</span>, <span class="ident">AstItemDef</span>, <span class="ident">ConstId</span>, <span class="ident">StaticId</span>, <span class="ident">TraitId</span>, <span class="ident">TypeAliasId</span>},
     <span class="ident">impl_block</span>::<span class="ident">ImplBlock</span>,
     <span class="ident">resolve</span>::<span class="ident">Resolver</span>,
     <span class="ident">diagnostics</span>::<span class="ident">DiagnosticSink</span>,
@@ -1392,7 +1392,7 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TypeAlias</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">id</span>: <span class="ident">TypeId</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">id</span>: <span class="ident">TypeAliasId</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">TypeAlias</span> {

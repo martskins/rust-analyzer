@@ -303,6 +303,17 @@
 <span id="303">303</span>
 <span id="304">304</span>
 <span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">sync</span>::<span class="ident">Arc</span>,
@@ -318,7 +329,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">DefDatabase</span>, <span class="ident">Name</span>, <span class="ident">AsName</span>, <span class="ident">Path</span>, <span class="ident">HirFileId</span>, <span class="ident">ModuleSource</span>,
-    <span class="ident">SourceFileItemId</span>, <span class="ident">SourceFileItems</span>,
+    <span class="ident">AstIdMap</span>, <span class="ident">FileAstId</span>,
 };
 
 <span class="doccomment">/// `RawItems` is a set of top-level items in a file (except for impls).</span>
@@ -366,7 +377,7 @@
     ) <span class="op">-&gt;</span> (<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RawItems</span><span class="op">&gt;</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ImportSourceMap</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">collector</span> <span class="op">=</span> <span class="ident">RawItemsCollector</span> {
             <span class="ident">raw_items</span>: <span class="ident">RawItems</span>::<span class="ident">default</span>(),
-            <span class="ident">source_file_items</span>: <span class="ident">db</span>.<span class="ident">file_items</span>(<span class="ident">file_id</span>.<span class="ident">into</span>()),
+            <span class="ident">source_ast_id_map</span>: <span class="ident">db</span>.<span class="ident">ast_id_map</span>(<span class="ident">file_id</span>.<span class="ident">into</span>()),
             <span class="ident">source_map</span>: <span class="ident">ImportSourceMap</span>::<span class="ident">default</span>(),
         };
         <span class="kw">let</span> <span class="ident">source_file</span> <span class="op">=</span> <span class="ident">db</span>.<span class="ident">hir_parse</span>(<span class="ident">file_id</span>);
@@ -421,8 +432,8 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">enum</span> <span class="ident">ModuleData</span> {
-    <span class="ident">Declaration</span> { <span class="ident">name</span>: <span class="ident">Name</span>, <span class="ident">source_item_id</span>: <span class="ident">SourceFileItemId</span> },
-    <span class="ident">Definition</span> { <span class="ident">name</span>: <span class="ident">Name</span>, <span class="ident">source_item_id</span>: <span class="ident">SourceFileItemId</span>, <span class="ident">items</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">RawItem</span><span class="op">&gt;</span> },
+    <span class="ident">Declaration</span> { <span class="ident">name</span>: <span class="ident">Name</span>, <span class="ident">ast_id</span>: <span class="ident">FileAstId</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">Module</span><span class="op">&gt;</span> },
+    <span class="ident">Definition</span> { <span class="ident">name</span>: <span class="ident">Name</span>, <span class="ident">ast_id</span>: <span class="ident">FileAstId</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">Module</span><span class="op">&gt;</span>, <span class="ident">items</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">RawItem</span><span class="op">&gt;</span> },
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
@@ -444,20 +455,19 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct</span> <span class="ident">DefData</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">source_item_id</span>: <span class="ident">SourceFileItemId</span>,
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">name</span>: <span class="ident">Name</span>,
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">kind</span>: <span class="ident">DefKind</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">enum</span> <span class="ident">DefKind</span> {
-    <span class="ident">Function</span>,
-    <span class="ident">Struct</span>,
-    <span class="ident">Enum</span>,
-    <span class="ident">Const</span>,
-    <span class="ident">Static</span>,
-    <span class="ident">Trait</span>,
-    <span class="ident">TypeAlias</span>,
+    <span class="ident">Function</span>(<span class="ident">FileAstId</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">FnDef</span><span class="op">&gt;</span>),
+    <span class="ident">Struct</span>(<span class="ident">FileAstId</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">StructDef</span><span class="op">&gt;</span>),
+    <span class="ident">Enum</span>(<span class="ident">FileAstId</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">EnumDef</span><span class="op">&gt;</span>),
+    <span class="ident">Const</span>(<span class="ident">FileAstId</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">ConstDef</span><span class="op">&gt;</span>),
+    <span class="ident">Static</span>(<span class="ident">FileAstId</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">StaticDef</span><span class="op">&gt;</span>),
+    <span class="ident">Trait</span>(<span class="ident">FileAstId</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">TraitDef</span><span class="op">&gt;</span>),
+    <span class="ident">TypeAlias</span>(<span class="ident">FileAstId</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">TypeAliasDef</span><span class="op">&gt;</span>),
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
@@ -466,7 +476,7 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct</span> <span class="ident">MacroData</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">source_item_id</span>: <span class="ident">SourceFileItemId</span>,
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">ast_id</span>: <span class="ident">FileAstId</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">MacroCall</span><span class="op">&gt;</span>,
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">path</span>: <span class="ident">Path</span>,
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Name</span><span class="op">&gt;</span>,
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">export</span>: <span class="ident">bool</span>,
@@ -474,7 +484,7 @@
 
 <span class="kw">struct</span> <span class="ident">RawItemsCollector</span> {
     <span class="ident">raw_items</span>: <span class="ident">RawItems</span>,
-    <span class="ident">source_file_items</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">SourceFileItems</span><span class="op">&gt;</span>,
+    <span class="ident">source_ast_id_map</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AstIdMap</span><span class="op">&gt;</span>,
     <span class="ident">source_map</span>: <span class="ident">ImportSourceMap</span>,
 }
 
@@ -506,18 +516,31 @@
                 <span class="comment">// impls don&#39;t participate in name resolution</span>
                 <span class="kw">return</span>;
             }
-            <span class="ident">ast</span>::<span class="ident">ModuleItemKind</span>::<span class="ident">StructDef</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> (<span class="ident">DefKind</span>::<span class="ident">Struct</span>, <span class="ident">it</span>.<span class="ident">name</span>()),
-            <span class="ident">ast</span>::<span class="ident">ModuleItemKind</span>::<span class="ident">EnumDef</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> (<span class="ident">DefKind</span>::<span class="ident">Enum</span>, <span class="ident">it</span>.<span class="ident">name</span>()),
-            <span class="ident">ast</span>::<span class="ident">ModuleItemKind</span>::<span class="ident">FnDef</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> (<span class="ident">DefKind</span>::<span class="ident">Function</span>, <span class="ident">it</span>.<span class="ident">name</span>()),
-            <span class="ident">ast</span>::<span class="ident">ModuleItemKind</span>::<span class="ident">TraitDef</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> (<span class="ident">DefKind</span>::<span class="ident">Trait</span>, <span class="ident">it</span>.<span class="ident">name</span>()),
-            <span class="ident">ast</span>::<span class="ident">ModuleItemKind</span>::<span class="ident">TypeAliasDef</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> (<span class="ident">DefKind</span>::<span class="ident">TypeAlias</span>, <span class="ident">it</span>.<span class="ident">name</span>()),
-            <span class="ident">ast</span>::<span class="ident">ModuleItemKind</span>::<span class="ident">ConstDef</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> (<span class="ident">DefKind</span>::<span class="ident">Const</span>, <span class="ident">it</span>.<span class="ident">name</span>()),
-            <span class="ident">ast</span>::<span class="ident">ModuleItemKind</span>::<span class="ident">StaticDef</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> (<span class="ident">DefKind</span>::<span class="ident">Static</span>, <span class="ident">it</span>.<span class="ident">name</span>()),
+            <span class="ident">ast</span>::<span class="ident">ModuleItemKind</span>::<span class="ident">StructDef</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> {
+                (<span class="ident">DefKind</span>::<span class="ident">Struct</span>(<span class="self">self</span>.<span class="ident">source_ast_id_map</span>.<span class="ident">ast_id</span>(<span class="ident">it</span>)), <span class="ident">it</span>.<span class="ident">name</span>())
+            }
+            <span class="ident">ast</span>::<span class="ident">ModuleItemKind</span>::<span class="ident">EnumDef</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> {
+                (<span class="ident">DefKind</span>::<span class="ident">Enum</span>(<span class="self">self</span>.<span class="ident">source_ast_id_map</span>.<span class="ident">ast_id</span>(<span class="ident">it</span>)), <span class="ident">it</span>.<span class="ident">name</span>())
+            }
+            <span class="ident">ast</span>::<span class="ident">ModuleItemKind</span>::<span class="ident">FnDef</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> {
+                (<span class="ident">DefKind</span>::<span class="ident">Function</span>(<span class="self">self</span>.<span class="ident">source_ast_id_map</span>.<span class="ident">ast_id</span>(<span class="ident">it</span>)), <span class="ident">it</span>.<span class="ident">name</span>())
+            }
+            <span class="ident">ast</span>::<span class="ident">ModuleItemKind</span>::<span class="ident">TraitDef</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> {
+                (<span class="ident">DefKind</span>::<span class="ident">Trait</span>(<span class="self">self</span>.<span class="ident">source_ast_id_map</span>.<span class="ident">ast_id</span>(<span class="ident">it</span>)), <span class="ident">it</span>.<span class="ident">name</span>())
+            }
+            <span class="ident">ast</span>::<span class="ident">ModuleItemKind</span>::<span class="ident">TypeAliasDef</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> {
+                (<span class="ident">DefKind</span>::<span class="ident">TypeAlias</span>(<span class="self">self</span>.<span class="ident">source_ast_id_map</span>.<span class="ident">ast_id</span>(<span class="ident">it</span>)), <span class="ident">it</span>.<span class="ident">name</span>())
+            }
+            <span class="ident">ast</span>::<span class="ident">ModuleItemKind</span>::<span class="ident">ConstDef</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> {
+                (<span class="ident">DefKind</span>::<span class="ident">Const</span>(<span class="self">self</span>.<span class="ident">source_ast_id_map</span>.<span class="ident">ast_id</span>(<span class="ident">it</span>)), <span class="ident">it</span>.<span class="ident">name</span>())
+            }
+            <span class="ident">ast</span>::<span class="ident">ModuleItemKind</span>::<span class="ident">StaticDef</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> {
+                (<span class="ident">DefKind</span>::<span class="ident">Static</span>(<span class="self">self</span>.<span class="ident">source_ast_id_map</span>.<span class="ident">ast_id</span>(<span class="ident">it</span>)), <span class="ident">it</span>.<span class="ident">name</span>())
+            }
         };
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">name</span>) <span class="op">=</span> <span class="ident">name</span> {
             <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">name</span>.<span class="ident">as_name</span>();
-            <span class="kw">let</span> <span class="ident">source_item_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">source_file_items</span>.<span class="ident">id_of_unchecked</span>(<span class="ident">item</span>.<span class="ident">syntax</span>());
-            <span class="kw">let</span> <span class="ident">def</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">raw_items</span>.<span class="ident">defs</span>.<span class="ident">alloc</span>(<span class="ident">DefData</span> { <span class="ident">name</span>, <span class="ident">kind</span>, <span class="ident">source_item_id</span> });
+            <span class="kw">let</span> <span class="ident">def</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">raw_items</span>.<span class="ident">defs</span>.<span class="ident">alloc</span>(<span class="ident">DefData</span> { <span class="ident">name</span>, <span class="ident">kind</span> });
             <span class="self">self</span>.<span class="ident">push_item</span>(<span class="ident">current_module</span>, <span class="ident">RawItem</span>::<span class="ident">Def</span>(<span class="ident">def</span>))
         }
     }
@@ -527,10 +550,9 @@
             <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=&gt;</span> <span class="ident">it</span>.<span class="ident">as_name</span>(),
             <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span>,
         };
-        <span class="kw">let</span> <span class="ident">source_item_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">source_file_items</span>.<span class="ident">id_of_unchecked</span>(<span class="ident">module</span>.<span class="ident">syntax</span>());
+        <span class="kw">let</span> <span class="ident">ast_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">source_ast_id_map</span>.<span class="ident">ast_id</span>(<span class="ident">module</span>);
         <span class="kw">if</span> <span class="ident">module</span>.<span class="ident">has_semi</span>() {
-            <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span>
-                <span class="self">self</span>.<span class="ident">raw_items</span>.<span class="ident">modules</span>.<span class="ident">alloc</span>(<span class="ident">ModuleData</span>::<span class="ident">Declaration</span> { <span class="ident">name</span>, <span class="ident">source_item_id</span> });
+            <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">raw_items</span>.<span class="ident">modules</span>.<span class="ident">alloc</span>(<span class="ident">ModuleData</span>::<span class="ident">Declaration</span> { <span class="ident">name</span>, <span class="ident">ast_id</span> });
             <span class="self">self</span>.<span class="ident">push_item</span>(<span class="ident">current_module</span>, <span class="ident">RawItem</span>::<span class="ident">Module</span>(<span class="ident">item</span>));
             <span class="kw">return</span>;
         }
@@ -538,7 +560,7 @@
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">item_list</span>) <span class="op">=</span> <span class="ident">module</span>.<span class="ident">item_list</span>() {
             <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">raw_items</span>.<span class="ident">modules</span>.<span class="ident">alloc</span>(<span class="ident">ModuleData</span>::<span class="ident">Definition</span> {
                 <span class="ident">name</span>,
-                <span class="ident">source_item_id</span>,
+                <span class="ident">ast_id</span>,
                 <span class="ident">items</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
             });
             <span class="self">self</span>.<span class="ident">process_module</span>(<span class="prelude-val">Some</span>(<span class="ident">item</span>), <span class="ident">item_list</span>);
@@ -592,9 +614,9 @@
         };
 
         <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">m</span>.<span class="ident">name</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">as_name</span>());
-        <span class="kw">let</span> <span class="ident">source_item_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">source_file_items</span>.<span class="ident">id_of_unchecked</span>(<span class="ident">m</span>.<span class="ident">syntax</span>());
+        <span class="kw">let</span> <span class="ident">ast_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">source_ast_id_map</span>.<span class="ident">ast_id</span>(<span class="ident">m</span>);
         <span class="kw">let</span> <span class="ident">export</span> <span class="op">=</span> <span class="ident">m</span>.<span class="ident">has_atom_attr</span>(<span class="string">&quot;macro_export&quot;</span>);
-        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">raw_items</span>.<span class="ident">macros</span>.<span class="ident">alloc</span>(<span class="ident">MacroData</span> { <span class="ident">source_item_id</span>, <span class="ident">path</span>, <span class="ident">name</span>, <span class="ident">export</span> });
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">raw_items</span>.<span class="ident">macros</span>.<span class="ident">alloc</span>(<span class="ident">MacroData</span> { <span class="ident">ast_id</span>, <span class="ident">path</span>, <span class="ident">name</span>, <span class="ident">export</span> });
         <span class="self">self</span>.<span class="ident">push_item</span>(<span class="ident">current_module</span>, <span class="ident">RawItem</span>::<span class="ident">Macro</span>(<span class="ident">m</span>));
     }
 
