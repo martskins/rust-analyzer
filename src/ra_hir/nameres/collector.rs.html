@@ -535,7 +535,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">Function</span>, <span class="ident">Module</span>, <span class="ident">Struct</span>, <span class="ident">Enum</span>, <span class="ident">Const</span>, <span class="ident">Static</span>, <span class="ident">Trait</span>, <span class="ident">TypeAlias</span>,
-    <span class="ident">DefDatabase</span>, <span class="ident">HirFileId</span>, <span class="ident">Name</span>, <span class="ident">Path</span>,
+    <span class="ident">DefDatabase</span>, <span class="ident">HirFileId</span>, <span class="ident">Name</span>, <span class="ident">Path</span>, <span class="ident">SourceItemId</span>,
     <span class="ident">KnownName</span>,
     <span class="ident">nameres</span>::{
         <span class="ident">Resolution</span>, <span class="ident">PerNs</span>, <span class="ident">ModuleDef</span>, <span class="ident">ReachedFixedPoint</span>, <span class="ident">ResolveMode</span>,
@@ -543,7 +543,7 @@
         <span class="ident">diagnostics</span>::<span class="ident">DefDiagnostic</span>,
         <span class="ident">raw</span>,
     },
-    <span class="ident">ids</span>::{<span class="ident">AstItemDef</span>, <span class="ident">LocationCtx</span>, <span class="ident">MacroCallLoc</span>, <span class="ident">SourceItemId</span>, <span class="ident">MacroCallId</span>, <span class="ident">MacroDefId</span>},
+    <span class="ident">ids</span>::{<span class="ident">AstItemDef</span>, <span class="ident">LocationCtx</span>, <span class="ident">MacroCallLoc</span>, <span class="ident">MacroCallId</span>, <span class="ident">MacroDefId</span>},
 };
 
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">collect_defs</span>(<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">DefDatabase</span>, <span class="kw-2">mut</span> <span class="ident">def_map</span>: <span class="ident">CrateDefMap</span>) <span class="op">-&gt;</span> <span class="ident">CrateDefMap</span> {
