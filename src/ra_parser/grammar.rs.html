@@ -198,6 +198,10 @@
 <span id="198">198</span>
 <span id="199">199</span>
 <span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! This is the actual &quot;grammar&quot; of the Rust language.</span>
 <span class="doccomment">//!</span>
@@ -385,6 +389,10 @@
         <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">start</span>();
         <span class="ident">p</span>.<span class="ident">bump</span>();
         <span class="ident">m</span>.<span class="ident">complete</span>(<span class="ident">p</span>, <span class="ident">NAME_REF</span>);
+    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">p</span>.<span class="ident">at</span>(<span class="ident">SELF_KW</span>) {
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">start</span>();
+        <span class="ident">p</span>.<span class="ident">bump</span>();
+        <span class="ident">m</span>.<span class="ident">complete</span>(<span class="ident">p</span>, <span class="ident">SELF_KW</span>);
     } <span class="kw">else</span> {
         <span class="ident">p</span>.<span class="ident">err_and_bump</span>(<span class="string">&quot;expected identifier&quot;</span>);
     }
