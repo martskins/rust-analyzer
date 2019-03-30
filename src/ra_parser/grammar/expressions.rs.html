@@ -502,6 +502,7 @@
 <span id="502">502</span>
 <span id="503">503</span>
 <span id="504">504</span>
+<span id="505">505</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">atom</span>;
 
@@ -915,6 +916,7 @@
 <span class="comment">//     82 as i32;</span>
 <span class="comment">//     81 as i8 + 1;</span>
 <span class="comment">//     79 as i16 - 1;</span>
+<span class="comment">//     0x36 as u8 &lt;= 0x37;</span>
 <span class="comment">// }</span>
 <span class="kw">fn</span> <span class="ident">cast_expr</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Parser</span>, <span class="ident">lhs</span>: <span class="ident">CompletedMarker</span>) <span class="op">-&gt;</span> <span class="ident">CompletedMarker</span> {
     <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">p</span>.<span class="ident">at</span>(<span class="ident">AS_KW</span>));
