@@ -173,6 +173,23 @@
 <span id="173">173</span>
 <span id="174">174</span>
 <span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
@@ -255,23 +272,40 @@
     }
 }
 
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bounds_without_colon</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Parser</span>) {
-    <span class="kw">loop</span> {
-        <span class="kw">let</span> <span class="ident">has_paren</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">eat</span>(<span class="ident">L_PAREN</span>);
-        <span class="ident">p</span>.<span class="ident">eat</span>(<span class="ident">QUESTION</span>);
-        <span class="kw">match</span> <span class="ident">p</span>.<span class="ident">current</span>() {
-            <span class="ident">LIFETIME</span> <span class="op">=&gt;</span> <span class="ident">p</span>.<span class="ident">bump</span>(),
-            <span class="ident">FOR_KW</span> <span class="op">=&gt;</span> <span class="ident">types</span>::<span class="ident">for_type</span>(<span class="ident">p</span>),
-            <span class="kw">_</span> <span class="kw">if</span> <span class="ident">paths</span>::<span class="ident">is_path_start</span>(<span class="ident">p</span>) <span class="op">=&gt;</span> <span class="ident">types</span>::<span class="ident">path_type</span>(<span class="ident">p</span>),
-            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="kw">break</span>,
-        }
-        <span class="kw">if</span> <span class="ident">has_paren</span> {
-            <span class="ident">p</span>.<span class="ident">expect</span>(<span class="ident">R_PAREN</span>);
-        }
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bounds_without_colon_m</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Parser</span>, <span class="ident">marker</span>: <span class="ident">Marker</span>) <span class="op">-&gt;</span> <span class="ident">CompletedMarker</span> {
+    <span class="kw">while</span> <span class="ident">type_bound</span>(<span class="ident">p</span>) {
         <span class="kw">if</span> <span class="op">!</span><span class="ident">p</span>.<span class="ident">eat</span>(<span class="ident">PLUS</span>) {
             <span class="kw">break</span>;
         }
     }
+
+    <span class="ident">marker</span>.<span class="ident">complete</span>(<span class="ident">p</span>, <span class="ident">TYPE_BOUND_LIST</span>)
+}
+
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bounds_without_colon</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Parser</span>) {
+    <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">start</span>();
+    <span class="ident">bounds_without_colon_m</span>(<span class="ident">p</span>, <span class="ident">m</span>);
+}
+
+<span class="kw">fn</span> <span class="ident">type_bound</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Parser</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">start</span>();
+    <span class="kw">let</span> <span class="ident">has_paren</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">eat</span>(<span class="ident">L_PAREN</span>);
+    <span class="ident">p</span>.<span class="ident">eat</span>(<span class="ident">QUESTION</span>);
+    <span class="kw">match</span> <span class="ident">p</span>.<span class="ident">current</span>() {
+        <span class="ident">LIFETIME</span> <span class="op">=&gt;</span> <span class="ident">p</span>.<span class="ident">bump</span>(),
+        <span class="ident">FOR_KW</span> <span class="op">=&gt;</span> <span class="ident">types</span>::<span class="ident">for_type</span>(<span class="ident">p</span>),
+        <span class="kw">_</span> <span class="kw">if</span> <span class="ident">paths</span>::<span class="ident">is_path_start</span>(<span class="ident">p</span>) <span class="op">=&gt;</span> <span class="ident">types</span>::<span class="ident">path_type_</span>(<span class="ident">p</span>, <span class="bool-val">false</span>),
+        <span class="kw">_</span> <span class="op">=&gt;</span> {
+            <span class="ident">m</span>.<span class="ident">abandon</span>(<span class="ident">p</span>);
+            <span class="kw">return</span> <span class="bool-val">false</span>;
+        }
+    }
+    <span class="kw">if</span> <span class="ident">has_paren</span> {
+        <span class="ident">p</span>.<span class="ident">expect</span>(<span class="ident">R_PAREN</span>);
+    }
+    <span class="ident">m</span>.<span class="ident">complete</span>(<span class="ident">p</span>, <span class="ident">TYPE_BOUND</span>);
+
+    <span class="bool-val">true</span>
 }
 
 <span class="comment">// test where_clause</span>
