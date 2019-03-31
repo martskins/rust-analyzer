@@ -575,10 +575,10 @@
                 }
             }
         }
-
-        <span class="ident">ASYNC_KW</span> <span class="kw">if</span> <span class="ident">la</span> <span class="op">==</span> <span class="ident">L_CURLY</span> <span class="op">=&gt;</span> {
+        <span class="ident">ASYNC_KW</span> <span class="kw">if</span> <span class="ident">la</span> <span class="op">==</span> <span class="ident">L_CURLY</span> <span class="op">||</span> <span class="ident">la</span> <span class="op">==</span> <span class="ident">MOVE_KW</span> <span class="op">=&gt;</span> {
             <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">start</span>();
             <span class="ident">p</span>.<span class="ident">bump</span>();
+            <span class="ident">p</span>.<span class="ident">eat</span>(<span class="ident">MOVE_KW</span>);
             <span class="ident">block_expr</span>(<span class="ident">p</span>, <span class="prelude-val">Some</span>(<span class="ident">m</span>))
         }
         <span class="ident">MATCH_KW</span> <span class="op">=&gt;</span> <span class="ident">match_expr</span>(<span class="ident">p</span>),
