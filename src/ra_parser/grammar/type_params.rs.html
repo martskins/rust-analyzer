@@ -358,7 +358,7 @@
         <span class="ident">LIFETIME</span> <span class="op">=&gt;</span> {
             <span class="ident">p</span>.<span class="ident">bump</span>();
             <span class="kw">if</span> <span class="ident">p</span>.<span class="ident">at</span>(<span class="ident">COLON</span>) {
-                <span class="ident">lifetime_bounds</span>(<span class="ident">p</span>);
+                <span class="ident">bounds</span>(<span class="ident">p</span>);
             } <span class="kw">else</span> {
                 <span class="ident">p</span>.<span class="ident">error</span>(<span class="string">&quot;expected colon&quot;</span>);
             }
