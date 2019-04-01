@@ -377,6 +377,28 @@
 <span id="377">377</span>
 <span id="378">378</span>
 <span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">test_utils</span>::<span class="ident">tested_by</span>;
 <span class="kw">use</span> <span class="ident">ra_db</span>::<span class="ident">SourceDatabase</span>;
@@ -408,6 +430,7 @@
     <span class="kw">let</span> <span class="ident">function</span> <span class="op">=</span> <span class="ident">hir</span>::<span class="ident">source_binder</span>::<span class="ident">function_from_source</span>(<span class="ident">db</span>, <span class="ident">symbol</span>.<span class="ident">file_id</span>, <span class="ident">fn_def</span>)<span class="question-mark">?</span>;
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">call_info</span> <span class="op">=</span> <span class="ident">CallInfo</span>::<span class="ident">new</span>(<span class="ident">db</span>, <span class="ident">function</span>, <span class="ident">fn_def</span>)<span class="question-mark">?</span>;
+
     <span class="comment">// If we have a calling expression let&#39;s find which argument we are on</span>
     <span class="kw">let</span> <span class="ident">num_params</span> <span class="op">=</span> <span class="ident">call_info</span>.<span class="ident">parameters</span>.<span class="ident">len</span>();
     <span class="kw">let</span> <span class="ident">has_self</span> <span class="op">=</span> <span class="ident">fn_def</span>.<span class="ident">param_list</span>().<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="ident">l</span>.<span class="ident">self_param</span>()).<span class="ident">is_some</span>();
@@ -418,18 +441,28 @@
         }
     } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">num_params</span> <span class="op">&gt;</span> <span class="number">1</span> {
         <span class="comment">// Count how many parameters into the call we are.</span>
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">arg_list</span>) <span class="op">=</span> <span class="ident">calling_node</span>.<span class="ident">arg_list</span>() {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">arg_list</span>) <span class="op">=</span> <span class="ident">calling_node</span>.<span class="ident">arg_list</span>() {
+            <span class="comment">// Number of arguments specified at the call site</span>
+            <span class="kw">let</span> <span class="ident">num_args_at_callsite</span> <span class="op">=</span> <span class="ident">arg_list</span>.<span class="ident">args</span>().<span class="ident">count</span>();
+
             <span class="kw">let</span> <span class="ident">arg_list_range</span> <span class="op">=</span> <span class="ident">arg_list</span>.<span class="ident">syntax</span>().<span class="ident">range</span>();
             <span class="kw">if</span> <span class="op">!</span><span class="ident">arg_list_range</span>.<span class="ident">contains_inclusive</span>(<span class="ident">position</span>.<span class="ident">offset</span>) {
                 <span class="macro">tested_by</span><span class="macro">!</span>(<span class="ident">call_info_bad_offset</span>);
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
 
-            <span class="kw">let</span> <span class="ident">param</span> <span class="op">=</span> <span class="ident">arg_list</span>
-                .<span class="ident">args</span>()
-                .<span class="ident">position</span>(<span class="op">|</span><span class="ident">arg</span><span class="op">|</span> <span class="ident">arg</span>.<span class="ident">syntax</span>().<span class="ident">range</span>().<span class="ident">contains</span>(<span class="ident">position</span>.<span class="ident">offset</span>))
-                .<span class="ident">or</span>(<span class="prelude-val">Some</span>(<span class="ident">num_params</span> <span class="op">-</span> <span class="number">1</span>))
-                .<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">param</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">min</span>(
+                <span class="ident">num_args_at_callsite</span>,
+                <span class="ident">arg_list</span>
+                    .<span class="ident">args</span>()
+                    .<span class="ident">take_while</span>(<span class="op">|</span><span class="ident">arg</span><span class="op">|</span> <span class="ident">arg</span>.<span class="ident">syntax</span>().<span class="ident">range</span>().<span class="ident">end</span>() <span class="op">&lt;</span> <span class="ident">position</span>.<span class="ident">offset</span>)
+                    .<span class="ident">count</span>(),
+            );
+
+            <span class="comment">// If we are in a method account for `self`</span>
+            <span class="kw">if</span> <span class="ident">has_self</span> {
+                <span class="ident">param</span> <span class="op">=</span> <span class="ident">param</span> <span class="op">+</span> <span class="number">1</span>;
+            }
 
             <span class="ident">call_info</span>.<span class="ident">active_parameter</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">param</span>);
         }
@@ -533,6 +566,17 @@ fn bar() { foo(3, &lt;|&gt;); }&quot;#</span>,
 
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>, <span class="macro">vec</span><span class="macro">!</span>(<span class="string">&quot;x&quot;</span>.<span class="ident">to_string</span>(), <span class="string">&quot;y&quot;</span>.<span class="ident">to_string</span>()));
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">active_parameter</span>, <span class="prelude-val">Some</span>(<span class="number">1</span>));
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_fn_signature_two_args_empty</span>() {
+        <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">call_info</span>(
+            <span class="string">r#&quot;fn foo(x: u32, y: u32) -&gt; u32 {x + y}
+fn bar() { foo(&lt;|&gt;); }&quot;#</span>,
+        );
+
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>, <span class="macro">vec</span><span class="macro">!</span>(<span class="string">&quot;x&quot;</span>.<span class="ident">to_string</span>(), <span class="string">&quot;y&quot;</span>.<span class="ident">to_string</span>()));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">active_parameter</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
