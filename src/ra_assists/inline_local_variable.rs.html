@@ -296,6 +296,8 @@
 <span id="296">296</span>
 <span id="297">297</span>
 <span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">hir</span>::<span class="ident">db</span>::<span class="ident">HirDatabase</span>;
 <span class="kw">use</span> <span class="ident">hir</span>::<span class="ident">source_binder</span>::<span class="ident">function_from_child_node</span>;
@@ -345,8 +347,10 @@
         <span class="op">|</span> <span class="ident">ExprKind</span>::<span class="ident">BlockExpr</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="bool-val">false</span>,
     };
 
-    <span class="kw">let</span> <span class="ident">delete_range</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">whitespace</span>) <span class="op">=</span>
-        <span class="ident">let_stmt</span>.<span class="ident">syntax</span>().<span class="ident">next_sibling</span>().<span class="ident">and_then</span>(<span class="ident">ast</span>::<span class="ident">Whitespace</span>::<span class="ident">cast</span>)
+    <span class="kw">let</span> <span class="ident">delete_range</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">whitespace</span>) <span class="op">=</span> <span class="ident">let_stmt</span>
+        .<span class="ident">syntax</span>()
+        .<span class="ident">next_sibling_or_token</span>()
+        .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">ast</span>::<span class="ident">Whitespace</span>::<span class="ident">cast</span>(<span class="ident">it</span>.<span class="ident">as_token</span>()<span class="question-mark">?</span>))
     {
         <span class="ident">TextRange</span>::<span class="ident">from_to</span>(<span class="ident">let_stmt</span>.<span class="ident">syntax</span>().<span class="ident">range</span>().<span class="ident">start</span>(), <span class="ident">whitespace</span>.<span class="ident">syntax</span>().<span class="ident">range</span>().<span class="ident">end</span>())
     } <span class="kw">else</span> {

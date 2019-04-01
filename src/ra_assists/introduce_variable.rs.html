@@ -510,16 +510,13 @@
 <span id="510">510</span>
 <span id="511">511</span>
 <span id="512">512</span>
-<span id="513">513</span>
-<span id="514">514</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">test_utils</span>::<span class="ident">tested_by</span>;
 <span class="kw">use</span> <span class="ident">hir</span>::<span class="ident">db</span>::<span class="ident">HirDatabase</span>;
 <span class="kw">use</span> <span class="ident">ra_syntax</span>::{
     <span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">AstNode</span>},
-    <span class="ident">SyntaxKind</span>::{
-        <span class="ident">WHITESPACE</span>, <span class="ident">MATCH_ARM</span>, <span class="ident">LAMBDA_EXPR</span>, <span class="ident">PATH_EXPR</span>, <span class="ident">BREAK_EXPR</span>, <span class="ident">LOOP_EXPR</span>, <span class="ident">RETURN_EXPR</span>, <span class="ident">COMMENT</span>
-    }, <span class="ident">SyntaxNode</span>, <span class="ident">TextUnit</span>,
+    <span class="ident">SyntaxNode</span>, <span class="ident">TextUnit</span>,
+    <span class="ident">SyntaxKind</span>::{<span class="ident">WHITESPACE</span>, <span class="ident">MATCH_ARM</span>, <span class="ident">LAMBDA_EXPR</span>, <span class="ident">PATH_EXPR</span>, <span class="ident">BREAK_EXPR</span>, <span class="ident">LOOP_EXPR</span>, <span class="ident">RETURN_EXPR</span>, <span class="ident">COMMENT</span>},
 };
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">AssistCtx</span>, <span class="ident">Assist</span>, <span class="ident">AssistId</span>};
@@ -528,14 +525,14 @@
     <span class="kw">if</span> <span class="ident">ctx</span>.<span class="ident">frange</span>.<span class="ident">range</span>.<span class="ident">is_empty</span>() {
         <span class="kw">return</span> <span class="prelude-val">None</span>;
     }
-    <span class="kw">let</span> <span class="ident">node</span> <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">covering_node</span>();
+    <span class="kw">let</span> <span class="ident">node</span> <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">covering_element</span>();
     <span class="kw">if</span> <span class="ident">node</span>.<span class="ident">kind</span>() <span class="op">==</span> <span class="ident">COMMENT</span> {
         <span class="macro">tested_by</span><span class="macro">!</span>(<span class="ident">introduce_var_in_comment_is_not_applicable</span>);
         <span class="kw">return</span> <span class="prelude-val">None</span>;
     }
     <span class="kw">let</span> <span class="ident">expr</span> <span class="op">=</span> <span class="ident">node</span>.<span class="ident">ancestors</span>().<span class="ident">find_map</span>(<span class="ident">valid_target_expr</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> (<span class="ident">anchor_stmt</span>, <span class="ident">wrap_in_block</span>) <span class="op">=</span> <span class="ident">anchor_stmt</span>(<span class="ident">expr</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">indent</span> <span class="op">=</span> <span class="ident">anchor_stmt</span>.<span class="ident">prev_sibling</span>()<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">indent</span> <span class="op">=</span> <span class="ident">anchor_stmt</span>.<span class="ident">prev_sibling_or_token</span>()<span class="question-mark">?</span>.<span class="ident">as_token</span>()<span class="question-mark">?</span>;
     <span class="kw">if</span> <span class="ident">indent</span>.<span class="ident">kind</span>() <span class="op">!=</span> <span class="ident">WHITESPACE</span> {
         <span class="kw">return</span> <span class="prelude-val">None</span>;
     }
@@ -569,16 +566,15 @@
             <span class="comment">// We want to maintain the indent level,</span>
             <span class="comment">// but we do not want to duplicate possible</span>
             <span class="comment">// extra newlines in the indent block</span>
-            <span class="kw">for</span> <span class="ident">chunk</span> <span class="kw">in</span> <span class="ident">indent</span>.<span class="ident">text</span>().<span class="ident">chunks</span>() {
-                <span class="kw">if</span> <span class="ident">chunk</span>.<span class="ident">starts_with</span>(<span class="string">&quot;\r\n&quot;</span>) {
-                    <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="string">&quot;\r\n&quot;</span>);
-                    <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="ident">chunk</span>.<span class="ident">trim_start_matches</span>(<span class="string">&quot;\r\n&quot;</span>));
-                } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">chunk</span>.<span class="ident">starts_with</span>(<span class="string">&quot;\n&quot;</span>) {
-                    <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="string">&quot;\n&quot;</span>);
-                    <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="ident">chunk</span>.<span class="ident">trim_start_matches</span>(<span class="string">&quot;\n&quot;</span>));
-                } <span class="kw">else</span> {
-                    <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="ident">chunk</span>);
-                }
+            <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">indent</span>.<span class="ident">text</span>();
+            <span class="kw">if</span> <span class="ident">text</span>.<span class="ident">starts_with</span>(<span class="string">&quot;\r\n&quot;</span>) {
+                <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="string">&quot;\r\n&quot;</span>);
+                <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="ident">text</span>.<span class="ident">trim_start_matches</span>(<span class="string">&quot;\r\n&quot;</span>));
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">text</span>.<span class="ident">starts_with</span>(<span class="string">&quot;\n&quot;</span>) {
+                <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="string">&quot;\n&quot;</span>);
+                <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="ident">text</span>.<span class="ident">trim_start_matches</span>(<span class="string">&quot;\n&quot;</span>));
+            } <span class="kw">else</span> {
+                <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="ident">text</span>);
             }
 
             <span class="ident">edit</span>.<span class="ident">target</span>(<span class="ident">expr</span>.<span class="ident">syntax</span>().<span class="ident">range</span>());

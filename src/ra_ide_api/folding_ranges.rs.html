@@ -324,13 +324,35 @@
 <span id="324">324</span>
 <span id="325">325</span>
 <span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">rustc_hash</span>::<span class="ident">FxHashSet</span>;
 
 <span class="kw">use</span> <span class="ident">ra_syntax</span>::{
-    <span class="ident">AstNode</span>, <span class="ident">Direction</span>, <span class="ident">SourceFile</span>, <span class="ident">SyntaxNode</span>, <span class="ident">TextRange</span>,
+    <span class="ident">AstNode</span>, <span class="ident">SourceFile</span>, <span class="ident">SyntaxNode</span>, <span class="ident">TextRange</span>, <span class="ident">Direction</span>, <span class="ident">SyntaxElement</span>,
     <span class="ident">SyntaxKind</span>::{<span class="self">self</span>, <span class="kw-2">*</span>},
-    <span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">VisibilityOwner</span>},
+    <span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">VisibilityOwner</span>, <span class="ident">Comment</span>},
 };
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
@@ -353,34 +375,49 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">visited_imports</span> <span class="op">=</span> <span class="ident">FxHashSet</span>::<span class="ident">default</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">visited_mods</span> <span class="op">=</span> <span class="ident">FxHashSet</span>::<span class="ident">default</span>();
 
-    <span class="kw">for</span> <span class="ident">node</span> <span class="kw">in</span> <span class="ident">file</span>.<span class="ident">syntax</span>().<span class="ident">descendants</span>() {
+    <span class="kw">for</span> <span class="ident">element</span> <span class="kw">in</span> <span class="ident">file</span>.<span class="ident">syntax</span>().<span class="ident">descendants_with_tokens</span>() {
         <span class="comment">// Fold items that span multiple lines</span>
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">kind</span>) <span class="op">=</span> <span class="ident">fold_kind</span>(<span class="ident">node</span>.<span class="ident">kind</span>()) {
-            <span class="kw">if</span> <span class="ident">node</span>.<span class="ident">text</span>().<span class="ident">contains</span>(<span class="string">&#39;\n&#39;</span>) {
-                <span class="ident">res</span>.<span class="ident">push</span>(<span class="ident">Fold</span> { <span class="ident">range</span>: <span class="ident">node</span>.<span class="ident">range</span>(), <span class="ident">kind</span> });
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">kind</span>) <span class="op">=</span> <span class="ident">fold_kind</span>(<span class="ident">element</span>.<span class="ident">kind</span>()) {
+            <span class="kw">let</span> <span class="ident">is_multiline</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">element</span> {
+                <span class="ident">SyntaxElement</span>::<span class="ident">Node</span>(<span class="ident">node</span>) <span class="op">=&gt;</span> <span class="ident">node</span>.<span class="ident">text</span>().<span class="ident">contains</span>(<span class="string">&#39;\n&#39;</span>),
+                <span class="ident">SyntaxElement</span>::<span class="ident">Token</span>(<span class="ident">token</span>) <span class="op">=&gt;</span> <span class="ident">token</span>.<span class="ident">text</span>().<span class="ident">contains</span>(<span class="string">&#39;\n&#39;</span>),
+            };
+            <span class="kw">if</span> <span class="ident">is_multiline</span> {
+                <span class="ident">res</span>.<span class="ident">push</span>(<span class="ident">Fold</span> { <span class="ident">range</span>: <span class="ident">element</span>.<span class="ident">range</span>(), <span class="ident">kind</span> });
+                <span class="kw">continue</span>;
             }
         }
 
-        <span class="comment">// Fold groups of comments</span>
-        <span class="kw">if</span> <span class="ident">node</span>.<span class="ident">kind</span>() <span class="op">==</span> <span class="ident">COMMENT</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">visited_comments</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">node</span>) {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">range</span>) <span class="op">=</span> <span class="ident">contiguous_range_for_comment</span>(<span class="ident">node</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">visited_comments</span>) {
-                <span class="ident">res</span>.<span class="ident">push</span>(<span class="ident">Fold</span> { <span class="ident">range</span>, <span class="ident">kind</span>: <span class="ident">FoldKind</span>::<span class="ident">Comment</span> })
+        <span class="kw">match</span> <span class="ident">element</span> {
+            <span class="ident">SyntaxElement</span>::<span class="ident">Token</span>(<span class="ident">token</span>) <span class="op">=&gt;</span> {
+                <span class="comment">// Fold groups of comments</span>
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">comment</span>) <span class="op">=</span> <span class="ident">ast</span>::<span class="ident">Comment</span>::<span class="ident">cast</span>(<span class="ident">token</span>) {
+                    <span class="kw">if</span> <span class="op">!</span><span class="ident">visited_comments</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">comment</span>) {
+                        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">range</span>) <span class="op">=</span>
+                            <span class="ident">contiguous_range_for_comment</span>(<span class="ident">comment</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">visited_comments</span>)
+                        {
+                            <span class="ident">res</span>.<span class="ident">push</span>(<span class="ident">Fold</span> { <span class="ident">range</span>, <span class="ident">kind</span>: <span class="ident">FoldKind</span>::<span class="ident">Comment</span> })
+                        }
+                    }
+                }
             }
-        }
+            <span class="ident">SyntaxElement</span>::<span class="ident">Node</span>(<span class="ident">node</span>) <span class="op">=&gt;</span> {
+                <span class="comment">// Fold groups of imports</span>
+                <span class="kw">if</span> <span class="ident">node</span>.<span class="ident">kind</span>() <span class="op">==</span> <span class="ident">USE_ITEM</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">visited_imports</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">node</span>) {
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">range</span>) <span class="op">=</span> <span class="ident">contiguous_range_for_group</span>(<span class="ident">node</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">visited_imports</span>) {
+                        <span class="ident">res</span>.<span class="ident">push</span>(<span class="ident">Fold</span> { <span class="ident">range</span>, <span class="ident">kind</span>: <span class="ident">FoldKind</span>::<span class="ident">Imports</span> })
+                    }
+                }
 
-        <span class="comment">// Fold groups of imports</span>
-        <span class="kw">if</span> <span class="ident">node</span>.<span class="ident">kind</span>() <span class="op">==</span> <span class="ident">USE_ITEM</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">visited_imports</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">node</span>) {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">range</span>) <span class="op">=</span> <span class="ident">contiguous_range_for_group</span>(<span class="ident">node</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">visited_imports</span>) {
-                <span class="ident">res</span>.<span class="ident">push</span>(<span class="ident">Fold</span> { <span class="ident">range</span>, <span class="ident">kind</span>: <span class="ident">FoldKind</span>::<span class="ident">Imports</span> })
-            }
-        }
-
-        <span class="comment">// Fold groups of mods</span>
-        <span class="kw">if</span> <span class="ident">node</span>.<span class="ident">kind</span>() <span class="op">==</span> <span class="ident">MODULE</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">has_visibility</span>(<span class="kw-2">&amp;</span><span class="ident">node</span>) <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">visited_mods</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">node</span>) {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">range</span>) <span class="op">=</span>
-                <span class="ident">contiguous_range_for_group_unless</span>(<span class="ident">node</span>, <span class="ident">has_visibility</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">visited_mods</span>)
-            {
-                <span class="ident">res</span>.<span class="ident">push</span>(<span class="ident">Fold</span> { <span class="ident">range</span>, <span class="ident">kind</span>: <span class="ident">FoldKind</span>::<span class="ident">Mods</span> })
+                <span class="comment">// Fold groups of mods</span>
+                <span class="kw">if</span> <span class="ident">node</span>.<span class="ident">kind</span>() <span class="op">==</span> <span class="ident">MODULE</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">has_visibility</span>(<span class="kw-2">&amp;</span><span class="ident">node</span>) <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">visited_mods</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">node</span>)
+                {
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">range</span>) <span class="op">=</span>
+                        <span class="ident">contiguous_range_for_group_unless</span>(<span class="ident">node</span>, <span class="ident">has_visibility</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">visited_mods</span>)
+                    {
+                        <span class="ident">res</span>.<span class="ident">push</span>(<span class="ident">Fold</span> { <span class="ident">range</span>, <span class="ident">kind</span>: <span class="ident">FoldKind</span>::<span class="ident">Mods</span> })
+                    }
+                }
             }
         }
     }
@@ -417,16 +454,21 @@
     <span class="ident">visited</span>.<span class="ident">insert</span>(<span class="ident">first</span>);
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">last</span> <span class="op">=</span> <span class="ident">first</span>;
-    <span class="kw">for</span> <span class="ident">node</span> <span class="kw">in</span> <span class="ident">first</span>.<span class="ident">siblings</span>(<span class="ident">Direction</span>::<span class="ident">Next</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ws</span>) <span class="op">=</span> <span class="ident">ast</span>::<span class="ident">Whitespace</span>::<span class="ident">cast</span>(<span class="ident">node</span>) {
-            <span class="comment">// There is a blank line, which means that the group ends here</span>
-            <span class="kw">if</span> <span class="ident">ws</span>.<span class="ident">count_newlines_lazy</span>().<span class="ident">take</span>(<span class="number">2</span>).<span class="ident">count</span>() <span class="op">==</span> <span class="number">2</span> {
+    <span class="kw">for</span> <span class="ident">element</span> <span class="kw">in</span> <span class="ident">first</span>.<span class="ident">siblings_with_tokens</span>(<span class="ident">Direction</span>::<span class="ident">Next</span>) {
+        <span class="kw">let</span> <span class="ident">node</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">element</span> {
+            <span class="ident">SyntaxElement</span>::<span class="ident">Token</span>(<span class="ident">token</span>) <span class="op">=&gt;</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ws</span>) <span class="op">=</span> <span class="ident">ast</span>::<span class="ident">Whitespace</span>::<span class="ident">cast</span>(<span class="ident">token</span>) {
+                    <span class="kw">if</span> <span class="op">!</span><span class="ident">ws</span>.<span class="ident">spans_multiple_lines</span>() {
+                        <span class="comment">// Ignore whitespace without blank lines</span>
+                        <span class="kw">continue</span>;
+                    }
+                }
+                <span class="comment">// There is a blank line or another token, which means that the</span>
+                <span class="comment">// group ends here</span>
                 <span class="kw">break</span>;
             }
-
-            <span class="comment">// Ignore whitespace without blank lines</span>
-            <span class="kw">continue</span>;
-        }
+            <span class="ident">SyntaxElement</span>::<span class="ident">Node</span>(<span class="ident">node</span>) <span class="op">=&gt;</span> <span class="ident">node</span>,
+        };
 
         <span class="comment">// Stop if we find a node that doesn&#39;t belong to the group</span>
         <span class="kw">if</span> <span class="ident">node</span>.<span class="ident">kind</span>() <span class="op">!=</span> <span class="ident">first</span>.<span class="ident">kind</span>() <span class="op">||</span> <span class="ident">unless</span>(<span class="ident">node</span>) {
@@ -446,40 +488,42 @@
 }
 
 <span class="kw">fn</span> <span class="ident">contiguous_range_for_comment</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">first</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">SyntaxNode</span>,
-    <span class="ident">visited</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FxHashSet</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">SyntaxNode</span><span class="op">&gt;</span>,
+    <span class="ident">first</span>: <span class="ident">Comment</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+    <span class="ident">visited</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FxHashSet</span><span class="op">&lt;</span><span class="ident">Comment</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>,
 ) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextRange</span><span class="op">&gt;</span> {
     <span class="ident">visited</span>.<span class="ident">insert</span>(<span class="ident">first</span>);
 
     <span class="comment">// Only fold comments of the same flavor</span>
-    <span class="kw">let</span> <span class="ident">group_flavor</span> <span class="op">=</span> <span class="ident">ast</span>::<span class="ident">Comment</span>::<span class="ident">cast</span>(<span class="ident">first</span>)<span class="question-mark">?</span>.<span class="ident">flavor</span>();
+    <span class="kw">let</span> <span class="ident">group_flavor</span> <span class="op">=</span> <span class="ident">first</span>.<span class="ident">flavor</span>();
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">last</span> <span class="op">=</span> <span class="ident">first</span>;
-    <span class="kw">for</span> <span class="ident">node</span> <span class="kw">in</span> <span class="ident">first</span>.<span class="ident">siblings</span>(<span class="ident">Direction</span>::<span class="ident">Next</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ws</span>) <span class="op">=</span> <span class="ident">ast</span>::<span class="ident">Whitespace</span>::<span class="ident">cast</span>(<span class="ident">node</span>) {
-            <span class="comment">// There is a blank line, which means the group ends here</span>
-            <span class="kw">if</span> <span class="ident">ws</span>.<span class="ident">count_newlines_lazy</span>().<span class="ident">take</span>(<span class="number">2</span>).<span class="ident">count</span>() <span class="op">==</span> <span class="number">2</span> {
+    <span class="kw">for</span> <span class="ident">element</span> <span class="kw">in</span> <span class="ident">first</span>.<span class="ident">syntax</span>().<span class="ident">siblings_with_tokens</span>(<span class="ident">Direction</span>::<span class="ident">Next</span>) {
+        <span class="kw">match</span> <span class="ident">element</span> {
+            <span class="ident">SyntaxElement</span>::<span class="ident">Token</span>(<span class="ident">token</span>) <span class="op">=&gt;</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ws</span>) <span class="op">=</span> <span class="ident">ast</span>::<span class="ident">Whitespace</span>::<span class="ident">cast</span>(<span class="ident">token</span>) {
+                    <span class="kw">if</span> <span class="op">!</span><span class="ident">ws</span>.<span class="ident">spans_multiple_lines</span>() {
+                        <span class="comment">// Ignore whitespace without blank lines</span>
+                        <span class="kw">continue</span>;
+                    }
+                }
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">c</span>) <span class="op">=</span> <span class="ident">Comment</span>::<span class="ident">cast</span>(<span class="ident">token</span>) {
+                    <span class="kw">if</span> <span class="ident">c</span>.<span class="ident">flavor</span>() <span class="op">==</span> <span class="ident">group_flavor</span> {
+                        <span class="ident">visited</span>.<span class="ident">insert</span>(<span class="ident">c</span>);
+                        <span class="ident">last</span> <span class="op">=</span> <span class="ident">c</span>;
+                        <span class="kw">continue</span>;
+                    }
+                }
+                <span class="comment">// The comment group ends because either:</span>
+                <span class="comment">// * An element of a different kind was reached</span>
+                <span class="comment">// * A comment of a different flavor was reached</span>
                 <span class="kw">break</span>;
             }
-
-            <span class="comment">// Ignore whitespace without blank lines</span>
-            <span class="kw">continue</span>;
-        }
-
-        <span class="kw">match</span> <span class="ident">ast</span>::<span class="ident">Comment</span>::<span class="ident">cast</span>(<span class="ident">node</span>) {
-            <span class="prelude-val">Some</span>(<span class="ident">next_comment</span>) <span class="kw">if</span> <span class="ident">next_comment</span>.<span class="ident">flavor</span>() <span class="op">==</span> <span class="ident">group_flavor</span> <span class="op">=&gt;</span> {
-                <span class="ident">visited</span>.<span class="ident">insert</span>(<span class="ident">node</span>);
-                <span class="ident">last</span> <span class="op">=</span> <span class="ident">node</span>;
-            }
-            <span class="comment">// The comment group ends because either:</span>
-            <span class="comment">// * An element of a different kind was reached</span>
-            <span class="comment">// * A comment of a different flavor was reached</span>
-            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="kw">break</span>,
-        }
+            <span class="ident">SyntaxElement</span>::<span class="ident">Node</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="kw">break</span>,
+        };
     }
 
     <span class="kw">if</span> <span class="ident">first</span> <span class="op">!=</span> <span class="ident">last</span> {
-        <span class="prelude-val">Some</span>(<span class="ident">TextRange</span>::<span class="ident">from_to</span>(<span class="ident">first</span>.<span class="ident">range</span>().<span class="ident">start</span>(), <span class="ident">last</span>.<span class="ident">range</span>().<span class="ident">end</span>()))
+        <span class="prelude-val">Some</span>(<span class="ident">TextRange</span>::<span class="ident">from_to</span>(<span class="ident">first</span>.<span class="ident">syntax</span>().<span class="ident">range</span>().<span class="ident">start</span>(), <span class="ident">last</span>.<span class="ident">syntax</span>().<span class="ident">range</span>().<span class="ident">end</span>()))
     } <span class="kw">else</span> {
         <span class="comment">// The group consists of only one element, therefore it cannot be folded</span>
         <span class="prelude-val">None</span>

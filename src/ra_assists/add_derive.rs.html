@@ -101,6 +101,8 @@
 <span id="101">101</span>
 <span id="102">102</span>
 <span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">hir</span>::<span class="ident">db</span>::<span class="ident">HirDatabase</span>;
 <span class="kw">use</span> <span class="ident">ra_syntax</span>::{
@@ -137,8 +139,10 @@
 
 <span class="comment">// Insert `derive` after doc comments.</span>
 <span class="kw">fn</span> <span class="ident">derive_insertion_offset</span>(<span class="ident">nominal</span>: <span class="kw-2">&amp;</span><span class="ident">ast</span>::<span class="ident">NominalDef</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextUnit</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">non_ws_child</span> <span class="op">=</span>
-        <span class="ident">nominal</span>.<span class="ident">syntax</span>().<span class="ident">children</span>().<span class="ident">find</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">kind</span>() <span class="op">!=</span> <span class="ident">COMMENT</span> <span class="op">&amp;&amp;</span> <span class="ident">it</span>.<span class="ident">kind</span>() <span class="op">!=</span> <span class="ident">WHITESPACE</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">non_ws_child</span> <span class="op">=</span> <span class="ident">nominal</span>
+        .<span class="ident">syntax</span>()
+        .<span class="ident">children_with_tokens</span>()
+        .<span class="ident">find</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">kind</span>() <span class="op">!=</span> <span class="ident">COMMENT</span> <span class="op">&amp;&amp;</span> <span class="ident">it</span>.<span class="ident">kind</span>() <span class="op">!=</span> <span class="ident">WHITESPACE</span>)<span class="question-mark">?</span>;
     <span class="prelude-val">Some</span>(<span class="ident">non_ws_child</span>.<span class="ident">range</span>().<span class="ident">start</span>())
 }
 

@@ -129,15 +129,15 @@
 
 <span class="doccomment">/// `TreeSink` abstracts details of a particular syntax tree implementation.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TreeSink</span> {
-    <span class="doccomment">/// Adds new leaf to the current branch.</span>
-    <span class="kw">fn</span> <span class="ident">leaf</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">kind</span>: <span class="ident">SyntaxKind</span>, <span class="ident">n_tokens</span>: <span class="ident">u8</span>);
+    <span class="doccomment">/// Adds new token to the current branch.</span>
+    <span class="kw">fn</span> <span class="ident">token</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">kind</span>: <span class="ident">SyntaxKind</span>, <span class="ident">n_tokens</span>: <span class="ident">u8</span>);
 
     <span class="doccomment">/// Start new branch and make it current.</span>
-    <span class="kw">fn</span> <span class="ident">start_branch</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">kind</span>: <span class="ident">SyntaxKind</span>);
+    <span class="kw">fn</span> <span class="ident">start_node</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">kind</span>: <span class="ident">SyntaxKind</span>);
 
     <span class="doccomment">/// Finish current branch and restore previous</span>
     <span class="doccomment">/// branch as current.</span>
-    <span class="kw">fn</span> <span class="ident">finish_branch</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>);
+    <span class="kw">fn</span> <span class="ident">finish_node</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>);
 
     <span class="kw">fn</span> <span class="ident">error</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">error</span>: <span class="ident">ParseError</span>);
 }

@@ -72,11 +72,13 @@
 <span id="72">72</span>
 <span id="73">73</span>
 <span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">join_to_string</span>::<span class="ident">join</span>;
 <span class="kw">use</span> <span class="ident">hir</span>::<span class="ident">db</span>::<span class="ident">HirDatabase</span>;
 <span class="kw">use</span> <span class="ident">ra_syntax</span>::{
-    <span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">AstNode</span>, <span class="ident">AstToken</span>, <span class="ident">NameOwner</span>, <span class="ident">TypeParamsOwner</span>},
+    <span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">AstNode</span>, <span class="ident">NameOwner</span>, <span class="ident">TypeParamsOwner</span>},
     <span class="ident">TextUnit</span>,
 };
 
@@ -97,8 +99,10 @@
         <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="string">&quot; &quot;</span>);
         <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="ident">name</span>.<span class="ident">text</span>().<span class="ident">as_str</span>());
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">type_params</span>) <span class="op">=</span> <span class="ident">type_params</span> {
-            <span class="kw">let</span> <span class="ident">lifetime_params</span> <span class="op">=</span>
-                <span class="ident">type_params</span>.<span class="ident">lifetime_params</span>().<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">lifetime</span>()).<span class="ident">map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">text</span>());
+            <span class="kw">let</span> <span class="ident">lifetime_params</span> <span class="op">=</span> <span class="ident">type_params</span>
+                .<span class="ident">lifetime_params</span>()
+                .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">lifetime_token</span>())
+                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">text</span>());
             <span class="kw">let</span> <span class="ident">type_params</span> <span class="op">=</span>
                 <span class="ident">type_params</span>.<span class="ident">type_params</span>().<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">name</span>()).<span class="ident">map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">text</span>());
             <span class="ident">join</span>(<span class="ident">lifetime_params</span>.<span class="ident">chain</span>(<span class="ident">type_params</span>)).<span class="ident">surround_with</span>(<span class="string">&quot;&lt;&quot;</span>, <span class="string">&quot;&gt;&quot;</span>).<span class="ident">to_buf</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>);
