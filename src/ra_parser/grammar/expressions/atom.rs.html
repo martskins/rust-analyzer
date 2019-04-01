@@ -480,6 +480,16 @@
 <span id="480">480</span>
 <span id="481">481</span>
 <span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
@@ -551,6 +561,7 @@
         <span class="ident">L_BRACK</span> <span class="op">=&gt;</span> <span class="ident">array_expr</span>(<span class="ident">p</span>),
         <span class="ident">PIPE</span> <span class="op">=&gt;</span> <span class="ident">lambda_expr</span>(<span class="ident">p</span>),
         <span class="ident">MOVE_KW</span> <span class="kw">if</span> <span class="ident">la</span> <span class="op">==</span> <span class="ident">PIPE</span> <span class="op">=&gt;</span> <span class="ident">lambda_expr</span>(<span class="ident">p</span>),
+        <span class="ident">ASYNC_KW</span> <span class="kw">if</span> <span class="ident">la</span> <span class="op">==</span> <span class="ident">PIPE</span> <span class="op">||</span> (<span class="ident">la</span> <span class="op">==</span> <span class="ident">MOVE_KW</span> <span class="op">&amp;&amp;</span> <span class="ident">p</span>.<span class="ident">nth</span>(<span class="number">2</span>) <span class="op">==</span> <span class="ident">PIPE</span>) <span class="op">=&gt;</span> <span class="ident">lambda_expr</span>(<span class="ident">p</span>),
         <span class="ident">IF_KW</span> <span class="op">=&gt;</span> <span class="ident">if_expr</span>(<span class="ident">p</span>),
 
         <span class="ident">LOOP_KW</span> <span class="op">=&gt;</span> <span class="ident">loop_expr</span>(<span class="ident">p</span>, <span class="prelude-val">None</span>),
@@ -575,7 +586,7 @@
                 }
             }
         }
-        <span class="ident">ASYNC_KW</span> <span class="kw">if</span> <span class="ident">la</span> <span class="op">==</span> <span class="ident">L_CURLY</span> <span class="op">||</span> <span class="ident">la</span> <span class="op">==</span> <span class="ident">MOVE_KW</span> <span class="op">=&gt;</span> {
+        <span class="ident">ASYNC_KW</span> <span class="kw">if</span> <span class="ident">la</span> <span class="op">==</span> <span class="ident">L_CURLY</span> <span class="op">||</span> (<span class="ident">la</span> <span class="op">==</span> <span class="ident">MOVE_KW</span> <span class="op">&amp;&amp;</span> <span class="ident">p</span>.<span class="ident">nth</span>(<span class="number">2</span>) <span class="op">==</span> <span class="ident">L_CURLY</span>) <span class="op">=&gt;</span> {
             <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">start</span>();
             <span class="ident">p</span>.<span class="ident">bump</span>();
             <span class="ident">p</span>.<span class="ident">eat</span>(<span class="ident">MOVE_KW</span>);
@@ -673,10 +684,19 @@
 <span class="comment">//     || -&gt; i32 { 92 };</span>
 <span class="comment">//     |x| x;</span>
 <span class="comment">//     move |x: i32,| x;</span>
+<span class="comment">//     async || {};</span>
+<span class="comment">//     move || {};</span>
+<span class="comment">//     async move || {};</span>
 <span class="comment">// }</span>
 <span class="kw">fn</span> <span class="ident">lambda_expr</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Parser</span>) <span class="op">-&gt;</span> <span class="ident">CompletedMarker</span> {
-    <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">p</span>.<span class="ident">at</span>(<span class="ident">PIPE</span>) <span class="op">||</span> (<span class="ident">p</span>.<span class="ident">at</span>(<span class="ident">MOVE_KW</span>) <span class="op">&amp;&amp;</span> <span class="ident">p</span>.<span class="ident">nth</span>(<span class="number">1</span>) <span class="op">==</span> <span class="ident">PIPE</span>));
+    <span class="macro">assert</span><span class="macro">!</span>(
+        <span class="ident">p</span>.<span class="ident">at</span>(<span class="ident">PIPE</span>)
+            <span class="op">||</span> (<span class="ident">p</span>.<span class="ident">at</span>(<span class="ident">MOVE_KW</span>) <span class="op">&amp;&amp;</span> <span class="ident">p</span>.<span class="ident">nth</span>(<span class="number">1</span>) <span class="op">==</span> <span class="ident">PIPE</span>)
+            <span class="op">||</span> (<span class="ident">p</span>.<span class="ident">at</span>(<span class="ident">ASYNC_KW</span>) <span class="op">&amp;&amp;</span> <span class="ident">p</span>.<span class="ident">nth</span>(<span class="number">1</span>) <span class="op">==</span> <span class="ident">PIPE</span>)
+            <span class="op">||</span> (<span class="ident">p</span>.<span class="ident">at</span>(<span class="ident">ASYNC_KW</span>) <span class="op">&amp;&amp;</span> <span class="ident">p</span>.<span class="ident">nth</span>(<span class="number">1</span>) <span class="op">==</span> <span class="ident">MOVE_KW</span> <span class="op">&amp;&amp;</span> <span class="ident">p</span>.<span class="ident">nth</span>(<span class="number">2</span>) <span class="op">==</span> <span class="ident">PIPE</span>)
+    );
     <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">start</span>();
+    <span class="ident">p</span>.<span class="ident">eat</span>(<span class="ident">ASYNC_KW</span>);
     <span class="ident">p</span>.<span class="ident">eat</span>(<span class="ident">MOVE_KW</span>);
     <span class="ident">params</span>::<span class="ident">param_list_opt_types</span>(<span class="ident">p</span>);
     <span class="kw">if</span> <span class="ident">opt_fn_ret_type</span>(<span class="ident">p</span>) {
