@@ -643,37 +643,37 @@ impl_froms!(TokenTree: Leaf, Subtree);
             <span class="string">r#&quot;
 SOURCE_FILE@[0; 40)
   STRUCT_DEF@[0; 20)
-    STRUCT_KW@[0; 6)
+    STRUCT_KW@[0; 6) &quot;struct&quot;
     NAME@[6; 9)
       IDENT@[6; 9) &quot;Foo&quot;
     NAMED_FIELD_DEF_LIST@[9; 20)
-      L_CURLY@[9; 10)
+      L_CURLY@[9; 10) &quot;{&quot;
       NAMED_FIELD_DEF@[10; 19)
         NAME@[10; 15)
           IDENT@[10; 15) &quot;field&quot;
-        COLON@[15; 16)
+        COLON@[15; 16) &quot;:&quot;
         PATH_TYPE@[16; 19)
           PATH@[16; 19)
             PATH_SEGMENT@[16; 19)
               NAME_REF@[16; 19)
                 IDENT@[16; 19) &quot;u32&quot;
-      R_CURLY@[19; 20)
+      R_CURLY@[19; 20) &quot;}&quot;
   STRUCT_DEF@[20; 40)
-    STRUCT_KW@[20; 26)
+    STRUCT_KW@[20; 26) &quot;struct&quot;
     NAME@[26; 29)
       IDENT@[26; 29) &quot;Bar&quot;
     NAMED_FIELD_DEF_LIST@[29; 40)
-      L_CURLY@[29; 30)
+      L_CURLY@[29; 30) &quot;{&quot;
       NAMED_FIELD_DEF@[30; 39)
         NAME@[30; 35)
           IDENT@[30; 35) &quot;field&quot;
-        COLON@[35; 36)
+        COLON@[35; 36) &quot;:&quot;
         PATH_TYPE@[36; 39)
           PATH@[36; 39)
             PATH_SEGMENT@[36; 39)
               NAME_REF@[36; 39)
                 IDENT@[36; 39) &quot;u32&quot;
-      R_CURLY@[39; 40)&quot;#</span>
+      R_CURLY@[39; 40) &quot;}&quot;&quot;#</span>
                 .<span class="ident">trim</span>()
         );
     }
