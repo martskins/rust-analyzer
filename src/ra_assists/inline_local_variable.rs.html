@@ -636,23 +636,13 @@
 <span id="636">636</span>
 <span id="637">637</span>
 <span id="638">638</span>
-<span id="639">639</span>
-<span id="640">640</span>
-<span id="641">641</span>
-<span id="642">642</span>
-<span id="643">643</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">hir</span>::{
     <span class="ident">db</span>::<span class="ident">HirDatabase</span>,
-    <span class="ident">source_binder</span>::<span class="ident">function_from_child_node</span>
+    <span class="ident">source_binder</span>::<span class="ident">function_from_child_node</span>,
 };
 <span class="kw">use</span> <span class="ident">ra_syntax</span>::{
-    <span class="ident">ast</span>::{
-        <span class="self">self</span>,
-        <span class="ident">AstNode</span>,
-        <span class="ident">PatKind</span>,
-        <span class="ident">ExprKind</span>
-    },
+    <span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">AstNode</span>, <span class="ident">AstToken</span>, <span class="ident">PatKind</span>, <span class="ident">ExprKind</span>},
     <span class="ident">TextRange</span>,
 };
 

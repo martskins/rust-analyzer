@@ -350,9 +350,9 @@
 <span class="kw">use</span> <span class="ident">rustc_hash</span>::<span class="ident">FxHashSet</span>;
 
 <span class="kw">use</span> <span class="ident">ra_syntax</span>::{
-    <span class="ident">AstNode</span>, <span class="ident">SourceFile</span>, <span class="ident">SyntaxNode</span>, <span class="ident">TextRange</span>, <span class="ident">Direction</span>, <span class="ident">SyntaxElement</span>,
+    <span class="ident">SourceFile</span>, <span class="ident">SyntaxNode</span>, <span class="ident">TextRange</span>, <span class="ident">Direction</span>, <span class="ident">SyntaxElement</span>,
     <span class="ident">SyntaxKind</span>::{<span class="self">self</span>, <span class="kw-2">*</span>},
-    <span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">VisibilityOwner</span>, <span class="ident">Comment</span>},
+    <span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">AstNode</span>, <span class="ident">AstToken</span>, <span class="ident">VisibilityOwner</span>},
 };
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
@@ -488,8 +488,8 @@
 }
 
 <span class="kw">fn</span> <span class="ident">contiguous_range_for_comment</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">first</span>: <span class="ident">Comment</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-    <span class="ident">visited</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FxHashSet</span><span class="op">&lt;</span><span class="ident">Comment</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">first</span>: <span class="ident">ast</span>::<span class="ident">Comment</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+    <span class="ident">visited</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FxHashSet</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">Comment</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>,
 ) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TextRange</span><span class="op">&gt;</span> {
     <span class="ident">visited</span>.<span class="ident">insert</span>(<span class="ident">first</span>);
 
@@ -506,7 +506,7 @@
                         <span class="kw">continue</span>;
                     }
                 }
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">c</span>) <span class="op">=</span> <span class="ident">Comment</span>::<span class="ident">cast</span>(<span class="ident">token</span>) {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">c</span>) <span class="op">=</span> <span class="ident">ast</span>::<span class="ident">Comment</span>::<span class="ident">cast</span>(<span class="ident">token</span>) {
                     <span class="kw">if</span> <span class="ident">c</span>.<span class="ident">flavor</span>() <span class="op">==</span> <span class="ident">group_flavor</span> {
                         <span class="ident">visited</span>.<span class="ident">insert</span>(<span class="ident">c</span>);
                         <span class="ident">last</span> <span class="op">=</span> <span class="ident">c</span>;
