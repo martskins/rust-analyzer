@@ -435,7 +435,7 @@
         .<span class="ident">left_biased</span>()
         .<span class="ident">and_then</span>(<span class="ident">ast</span>::<span class="ident">Comment</span>::<span class="ident">cast</span>)<span class="question-mark">?</span>;
 
-    <span class="kw">if</span> <span class="ident">comment</span>.<span class="ident">flavor</span>() <span class="op">==</span> <span class="ident">ast</span>::<span class="ident">CommentFlavor</span>::<span class="ident">Multiline</span> {
+    <span class="kw">if</span> <span class="ident">comment</span>.<span class="ident">kind</span>().<span class="ident">shape</span>.<span class="ident">is_block</span>() {
         <span class="kw">return</span> <span class="prelude-val">None</span>;
     }
 

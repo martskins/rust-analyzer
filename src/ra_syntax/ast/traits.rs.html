@@ -262,7 +262,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">has_comments</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">let</span> <span class="ident">docs</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">doc_comments</span>()
-            .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">comment</span><span class="op">|</span> <span class="ident">comment</span>.<span class="ident">is_doc_comment</span>())
+            .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">comment</span><span class="op">|</span> <span class="ident">comment</span>.<span class="ident">kind</span>().<span class="ident">doc</span>.<span class="ident">is_some</span>())
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">comment</span><span class="op">|</span> {
                 <span class="ident">has_comments</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 <span class="kw">let</span> <span class="ident">prefix_len</span> <span class="op">=</span> <span class="ident">comment</span>.<span class="ident">prefix</span>().<span class="ident">len</span>();
