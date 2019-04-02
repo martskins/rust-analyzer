@@ -931,6 +931,11 @@
 <span id="931">931</span>
 <span id="932">932</span>
 <span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Index</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
@@ -944,7 +949,7 @@
 };
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">Path</span>, <span class="ident">Name</span>, <span class="ident">HirDatabase</span>, <span class="ident">Function</span>, <span class="ident">Resolver</span>,
+    <span class="ident">Path</span>, <span class="ident">Name</span>, <span class="ident">HirDatabase</span>, <span class="ident">Resolver</span>,<span class="ident">DefWithBody</span>,
     <span class="ident">name</span>::<span class="ident">AsName</span>,
     <span class="ident">type_ref</span>::{<span class="ident">Mutability</span>, <span class="ident">TypeRef</span>},
 };
@@ -961,9 +966,8 @@
 <span class="doccomment">/// The body of an item (function, const etc.).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Body</span> {
-    <span class="comment">// FIXME: this should be more general, consts &amp; statics also have bodies</span>
-    <span class="doccomment">/// The Function of the item this body belongs to</span>
-    <span class="ident">owner</span>: <span class="ident">Function</span>,
+    <span class="doccomment">/// The def of the item this body belongs to</span>
+    <span class="ident">owner</span>: <span class="ident">DefWithBody</span>,
     <span class="ident">exprs</span>: <span class="ident">Arena</span><span class="op">&lt;</span><span class="ident">ExprId</span>, <span class="ident">Expr</span><span class="op">&gt;</span>,
     <span class="ident">pats</span>: <span class="ident">Arena</span><span class="op">&lt;</span><span class="ident">PatId</span>, <span class="ident">Pat</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The patterns for the function&#39;s parameters. While the parameter types are</span>
@@ -1000,7 +1004,7 @@
         <span class="self">self</span>.<span class="ident">body_expr</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">owner</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Function</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">owner</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">DefWithBody</span> {
         <span class="self">self</span>.<span class="ident">owner</span>
     }
 
@@ -1397,8 +1401,8 @@
 
 <span class="comment">// Queries</span>
 
-<span class="kw">struct</span> <span class="ident">ExprCollector</span> {
-    <span class="ident">owner</span>: <span class="ident">Function</span>,
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">ExprCollector</span> {
+    <span class="ident">owner</span>: <span class="ident">DefWithBody</span>,
     <span class="ident">exprs</span>: <span class="ident">Arena</span><span class="op">&lt;</span><span class="ident">ExprId</span>, <span class="ident">Expr</span><span class="op">&gt;</span>,
     <span class="ident">pats</span>: <span class="ident">Arena</span><span class="op">&lt;</span><span class="ident">PatId</span>, <span class="ident">Pat</span><span class="op">&gt;</span>,
     <span class="ident">source_map</span>: <span class="ident">BodySourceMap</span>,
@@ -1407,7 +1411,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ExprCollector</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">owner</span>: <span class="ident">Function</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">owner</span>: <span class="ident">DefWithBody</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">ExprCollector</span> {
             <span class="ident">owner</span>,
             <span class="ident">exprs</span>: <span class="ident">Arena</span>::<span class="ident">default</span>(),
@@ -1800,6 +1804,16 @@
         }
     }
 
+    <span class="kw">fn</span> <span class="ident">collect_const_body</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="ident">ast</span>::<span class="ident">ConstDef</span>) {
+        <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">collect_expr_opt</span>(<span class="ident">node</span>.<span class="ident">body</span>());
+        <span class="self">self</span>.<span class="ident">body_expr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">body</span>);
+    }
+
+    <span class="kw">fn</span> <span class="ident">collect_static_body</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="ident">ast</span>::<span class="ident">StaticDef</span>) {
+        <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">collect_expr_opt</span>(<span class="ident">node</span>.<span class="ident">body</span>());
+        <span class="self">self</span>.<span class="ident">body_expr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">body</span>);
+    }
+
     <span class="kw">fn</span> <span class="ident">collect_fn_body</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="ident">ast</span>::<span class="ident">FnDef</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">param_list</span>) <span class="op">=</span> <span class="ident">node</span>.<span class="ident">param_list</span>() {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">self_param</span>) <span class="op">=</span> <span class="ident">param_list</span>.<span class="ident">self_param</span>() {
@@ -1844,26 +1858,22 @@
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">body_with_source_map_query</span>(
     <span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">HirDatabase</span>,
-    <span class="ident">func</span>: <span class="ident">Function</span>,
+    <span class="ident">def</span>: <span class="ident">DefWithBody</span>,
 ) <span class="op">-&gt;</span> (<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">BodySourceMap</span><span class="op">&gt;</span>) {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">collector</span> <span class="op">=</span> <span class="ident">ExprCollector</span>::<span class="ident">new</span>(<span class="ident">func</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">collector</span> <span class="op">=</span> <span class="ident">ExprCollector</span>::<span class="ident">new</span>(<span class="ident">def</span>);
 
-    <span class="comment">// FIXME: consts, etc.</span>
-    <span class="ident">collector</span>.<span class="ident">collect_fn_body</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">source</span>(<span class="ident">db</span>).<span class="number">1</span>);
+    <span class="kw">match</span> <span class="ident">def</span> {
+        <span class="ident">DefWithBody</span>::<span class="ident">Const</span>(<span class="kw-2">ref</span> <span class="ident">c</span>) <span class="op">=&gt;</span> <span class="ident">collector</span>.<span class="ident">collect_const_body</span>(<span class="kw-2">&amp;</span><span class="ident">c</span>.<span class="ident">source</span>(<span class="ident">db</span>).<span class="number">1</span>),
+        <span class="ident">DefWithBody</span>::<span class="ident">Function</span>(<span class="kw-2">ref</span> <span class="ident">f</span>) <span class="op">=&gt;</span> <span class="ident">collector</span>.<span class="ident">collect_fn_body</span>(<span class="kw-2">&amp;</span><span class="ident">f</span>.<span class="ident">source</span>(<span class="ident">db</span>).<span class="number">1</span>),
+        <span class="ident">DefWithBody</span>::<span class="ident">Static</span>(<span class="kw-2">ref</span> <span class="ident">s</span>) <span class="op">=&gt;</span> <span class="ident">collector</span>.<span class="ident">collect_static_body</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>.<span class="ident">source</span>(<span class="ident">db</span>).<span class="number">1</span>),
+    }
 
     <span class="kw">let</span> (<span class="ident">body</span>, <span class="ident">source_map</span>) <span class="op">=</span> <span class="ident">collector</span>.<span class="ident">finish</span>();
     (<span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">body</span>), <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">source_map</span>))
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">body_hir_query</span>(<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">HirDatabase</span>, <span class="ident">func</span>: <span class="ident">Function</span>) <span class="op">-&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span> {
-    <span class="ident">db</span>.<span class="ident">body_with_source_map</span>(<span class="ident">func</span>).<span class="number">0</span>
-}
-
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">fn</span> <span class="ident">collect_fn_body_syntax</span>(<span class="ident">function</span>: <span class="ident">Function</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="ident">ast</span>::<span class="ident">FnDef</span>) <span class="op">-&gt;</span> (<span class="ident">Body</span>, <span class="ident">BodySourceMap</span>) {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">collector</span> <span class="op">=</span> <span class="ident">ExprCollector</span>::<span class="ident">new</span>(<span class="ident">function</span>);
-    <span class="ident">collector</span>.<span class="ident">collect_fn_body</span>(<span class="ident">node</span>);
-    <span class="ident">collector</span>.<span class="ident">finish</span>()
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">body_hir_query</span>(<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">HirDatabase</span>, <span class="ident">def</span>: <span class="ident">DefWithBody</span>) <span class="op">-&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span> {
+    <span class="ident">db</span>.<span class="ident">body_with_source_map</span>(<span class="ident">def</span>).<span class="number">0</span>
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../";window.currentCrate = "ra_hir";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
