@@ -720,7 +720,7 @@
 <span class="kw">use</span> <span class="ident">ra_syntax</span>::{<span class="ident">ast</span>::<span class="self">self</span>, <span class="ident">TreeArc</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">Name</span>, <span class="ident">ScopesWithSourceMap</span>, <span class="ident">Ty</span>, <span class="ident">HirFileId</span>,
+    <span class="ident">Name</span>, <span class="ident">ScopesWithSourceMap</span>, <span class="ident">Ty</span>, <span class="ident">HirFileId</span>, <span class="ident">ImportSource</span>,
     <span class="ident">HirDatabase</span>, <span class="ident">DefDatabase</span>,
     <span class="ident">type_ref</span>::<span class="ident">TypeRef</span>,
     <span class="ident">nameres</span>::{<span class="ident">ModuleScope</span>, <span class="ident">Namespace</span>, <span class="ident">ImportId</span>, <span class="ident">CrateModuleId</span>},
@@ -833,7 +833,7 @@
     }
 
     <span class="doccomment">/// Returns the syntax of the last path segment corresponding to this import</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">import_source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">HirDatabase</span>, <span class="ident">import</span>: <span class="ident">ImportId</span>) <span class="op">-&gt;</span> <span class="ident">TreeArc</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">UseTree</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">import_source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">HirDatabase</span>, <span class="ident">import</span>: <span class="ident">ImportId</span>) <span class="op">-&gt;</span> <span class="ident">ImportSource</span> {
         <span class="self">self</span>.<span class="ident">import_source_impl</span>(<span class="ident">db</span>, <span class="ident">import</span>)
     }
 

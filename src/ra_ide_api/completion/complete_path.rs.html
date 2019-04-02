@@ -272,6 +272,9 @@
 <span id="272">272</span>
 <span id="273">273</span>
 <span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">hir</span>::<span class="ident">Resolution</span>;
 <span class="kw">use</span> <span class="ident">ra_syntax</span>::<span class="ident">AstNode</span>;
@@ -294,11 +297,14 @@
             <span class="kw">for</span> (<span class="ident">name</span>, <span class="ident">res</span>) <span class="kw">in</span> <span class="ident">module_scope</span>.<span class="ident">entries</span>() {
                 <span class="kw">if</span> <span class="prelude-val">Some</span>(<span class="ident">module</span>) <span class="op">==</span> <span class="ident">ctx</span>.<span class="ident">module</span> {
                     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">import</span>) <span class="op">=</span> <span class="ident">res</span>.<span class="ident">import</span> {
-                        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">module</span>.<span class="ident">import_source</span>(<span class="ident">ctx</span>.<span class="ident">db</span>, <span class="ident">import</span>);
-                        <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">syntax</span>().<span class="ident">range</span>().<span class="ident">contains_inclusive</span>(<span class="ident">ctx</span>.<span class="ident">offset</span>) {
-                            <span class="comment">// for `use self::foo&lt;|&gt;`, don&#39;t suggest `foo` as a completion</span>
-                            <span class="macro">tested_by</span><span class="macro">!</span>(<span class="ident">dont_complete_current_use</span>);
-                            <span class="kw">continue</span>;
+                        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">hir</span>::<span class="ident">ImportSource</span>::<span class="ident">UseTree</span>(<span class="ident">tree</span>) <span class="op">=</span>
+                            <span class="ident">module</span>.<span class="ident">import_source</span>(<span class="ident">ctx</span>.<span class="ident">db</span>, <span class="ident">import</span>)
+                        {
+                            <span class="kw">if</span> <span class="ident">tree</span>.<span class="ident">syntax</span>().<span class="ident">range</span>().<span class="ident">contains_inclusive</span>(<span class="ident">ctx</span>.<span class="ident">offset</span>) {
+                                <span class="comment">// for `use self::foo&lt;|&gt;`, don&#39;t suggest `foo` as a completion</span>
+                                <span class="macro">tested_by</span><span class="macro">!</span>(<span class="ident">dont_complete_current_use</span>);
+                                <span class="kw">continue</span>;
+                            }
                         }
                     }
                 }
