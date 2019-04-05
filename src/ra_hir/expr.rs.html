@@ -936,6 +936,9 @@
 <span id="936">936</span>
 <span id="937">937</span>
 <span id="938">938</span>
+<span id="939">939</span>
+<span id="940">940</span>
+<span id="941">941</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Index</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
@@ -1610,7 +1613,10 @@
             }
             <span class="ident">ast</span>::<span class="ident">ExprKind</span>::<span class="ident">FieldExpr</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> {
                 <span class="kw">let</span> <span class="ident">expr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">collect_expr_opt</span>(<span class="ident">e</span>.<span class="ident">expr</span>());
-                <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">e</span>.<span class="ident">name_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">nr</span><span class="op">|</span> <span class="ident">nr</span>.<span class="ident">as_name</span>()).<span class="ident">unwrap_or_else</span>(<span class="ident">Name</span>::<span class="ident">missing</span>);
+                <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">e</span>.<span class="ident">field_access</span>() {
+                    <span class="prelude-val">Some</span>(<span class="ident">kind</span>) <span class="op">=&gt;</span> <span class="ident">kind</span>.<span class="ident">as_name</span>(),
+                    <span class="kw">_</span> <span class="op">=&gt;</span> <span class="ident">Name</span>::<span class="ident">missing</span>(),
+                };
                 <span class="self">self</span>.<span class="ident">alloc_expr</span>(<span class="ident">Expr</span>::<span class="ident">Field</span> { <span class="ident">expr</span>, <span class="ident">name</span> }, <span class="ident">syntax_ptr</span>)
             }
             <span class="ident">ast</span>::<span class="ident">ExprKind</span>::<span class="ident">TryExpr</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> {

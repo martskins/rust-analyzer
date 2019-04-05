@@ -143,6 +143,10 @@
 <span id="143">143</span>
 <span id="144">144</span>
 <span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
 
@@ -241,6 +245,7 @@
     <span class="ident">InvalidSuffix</span>,
     <span class="ident">InvalidBlockAttr</span>,
     <span class="ident">InvalidMatchInnerAttr</span>,
+    <span class="ident">InvalidTupleIndexFormat</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">SyntaxErrorKind</span> {
@@ -284,6 +289,9 @@
             }
             <span class="ident">InvalidMatchInnerAttr</span> <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Inner attributes are only allowed directly after the opening brace of the match expression&quot;</span>)
+            }
+            <span class="ident">InvalidTupleIndexFormat</span> <span class="op">=&gt;</span> {
+                <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Tuple (struct) field access is only allowed through decimal integers with no underscores or suffix&quot;</span>)
             }
             <span class="ident">ParseError</span>(<span class="ident">msg</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">msg</span>.<span class="number">0</span>),
         }

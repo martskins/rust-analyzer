@@ -185,6 +185,28 @@
 <span id="185">185</span>
 <span id="186">186</span>
 <span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">hir</span>::{<span class="ident">Ty</span>, <span class="ident">AdtDef</span>, <span class="ident">TypeCtor</span>};
 
@@ -368,6 +390,28 @@
             fn foo() {
                let b = (0, 3.14);
                b.&lt;|&gt;
+            }
+            &quot;</span>,
+        );
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_tuple_field_inference</span>() {
+        <span class="ident">check_ref_completion</span>(
+            <span class="string">&quot;tuple_field_inference&quot;</span>,
+            <span class="string">r&quot;
+            pub struct S;
+            impl S {
+                pub fn blah(&amp;self) {}
+            }
+
+            struct T(S);
+
+            impl T {
+                fn foo(&amp;self) {
+                    // FIXME: This doesn&#39;t work without the trailing `a` as `0.` is a float
+                    self.0.a&lt;|&gt;
+                }
             }
             &quot;</span>,
         );
