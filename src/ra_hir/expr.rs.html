@@ -939,6 +939,36 @@
 <span id="939">939</span>
 <span id="940">940</span>
 <span id="941">941</span>
+<span id="942">942</span>
+<span id="943">943</span>
+<span id="944">944</span>
+<span id="945">945</span>
+<span id="946">946</span>
+<span id="947">947</span>
+<span id="948">948</span>
+<span id="949">949</span>
+<span id="950">950</span>
+<span id="951">951</span>
+<span id="952">952</span>
+<span id="953">953</span>
+<span id="954">954</span>
+<span id="955">955</span>
+<span id="956">956</span>
+<span id="957">957</span>
+<span id="958">958</span>
+<span id="959">959</span>
+<span id="960">960</span>
+<span id="961">961</span>
+<span id="962">962</span>
+<span id="963">963</span>
+<span id="964">964</span>
+<span id="965">965</span>
+<span id="966">966</span>
+<span id="967">967</span>
+<span id="968">968</span>
+<span id="969">969</span>
+<span id="970">970</span>
+<span id="971">971</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Index</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
@@ -948,7 +978,7 @@
 <span class="kw">use</span> <span class="ident">ra_arena</span>::{<span class="ident">Arena</span>, <span class="ident">RawId</span>, <span class="ident">impl_arena_id</span>, <span class="ident">map</span>::<span class="ident">ArenaMap</span>};
 <span class="kw">use</span> <span class="ident">ra_syntax</span>::{
     <span class="ident">SyntaxNodePtr</span>, <span class="ident">AstPtr</span>, <span class="ident">AstNode</span>,
-    <span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">LoopBodyOwner</span>, <span class="ident">ArgListOwner</span>, <span class="ident">NameOwner</span>, <span class="ident">LiteralKind</span>, <span class="ident">TypeAscriptionOwner</span>}
+    <span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">LoopBodyOwner</span>, <span class="ident">ArgListOwner</span>, <span class="ident">NameOwner</span>, <span class="ident">LiteralKind</span>,<span class="ident">ArrayExprKind</span>, <span class="ident">TypeAscriptionOwner</span>}
 };
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -1180,14 +1210,17 @@
     <span class="ident">Tuple</span> {
         <span class="ident">exprs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ExprId</span><span class="op">&gt;</span>,
     },
-    <span class="ident">Array</span> {
-        <span class="ident">exprs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ExprId</span><span class="op">&gt;</span>,
-    },
+    <span class="ident">Array</span>(<span class="ident">Array</span>),
     <span class="ident">Literal</span>(<span class="ident">Literal</span>),
 }
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ra_syntax</span>::<span class="ident">ast</span>::<span class="ident">PrefixOp</span> <span class="kw">as</span> <span class="ident">UnaryOp</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ra_syntax</span>::<span class="ident">ast</span>::<span class="ident">BinOp</span> <span class="kw">as</span> <span class="ident">BinaryOp</span>;
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Array</span> {
+    <span class="ident">ElementList</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ExprId</span><span class="op">&gt;</span>),
+    <span class="ident">Repeat</span> { <span class="ident">initializer</span>: <span class="ident">ExprId</span>, <span class="ident">repeat</span>: <span class="ident">ExprId</span> },
+}
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MatchArm</span> {
@@ -1290,11 +1323,22 @@
             <span class="op">|</span> <span class="ident">Expr</span>::<span class="ident">UnaryOp</span> { <span class="ident">expr</span>, .. } <span class="op">=&gt;</span> {
                 <span class="ident">f</span>(<span class="kw-2">*</span><span class="ident">expr</span>);
             }
-            <span class="ident">Expr</span>::<span class="ident">Tuple</span> { <span class="ident">exprs</span> } <span class="op">|</span> <span class="ident">Expr</span>::<span class="ident">Array</span> { <span class="ident">exprs</span> } <span class="op">=&gt;</span> {
+            <span class="ident">Expr</span>::<span class="ident">Tuple</span> { <span class="ident">exprs</span> } <span class="op">=&gt;</span> {
                 <span class="kw">for</span> <span class="ident">expr</span> <span class="kw">in</span> <span class="ident">exprs</span> {
                     <span class="ident">f</span>(<span class="kw-2">*</span><span class="ident">expr</span>);
                 }
             }
+            <span class="ident">Expr</span>::<span class="ident">Array</span>(<span class="ident">a</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="ident">a</span> {
+                <span class="ident">Array</span>::<span class="ident">ElementList</span>(<span class="ident">exprs</span>) <span class="op">=&gt;</span> {
+                    <span class="kw">for</span> <span class="ident">expr</span> <span class="kw">in</span> <span class="ident">exprs</span> {
+                        <span class="ident">f</span>(<span class="kw-2">*</span><span class="ident">expr</span>);
+                    }
+                }
+                <span class="ident">Array</span>::<span class="ident">Repeat</span> { <span class="ident">initializer</span>, <span class="ident">repeat</span> } <span class="op">=&gt;</span> {
+                    <span class="ident">f</span>(<span class="kw-2">*</span><span class="ident">initializer</span>);
+                    <span class="ident">f</span>(<span class="kw-2">*</span><span class="ident">repeat</span>)
+                }
+            },
             <span class="ident">Expr</span>::<span class="ident">Literal</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> {}
         }
     }
@@ -1665,10 +1709,26 @@
                 <span class="kw">let</span> <span class="ident">exprs</span> <span class="op">=</span> <span class="ident">e</span>.<span class="ident">exprs</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">expr</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">collect_expr</span>(<span class="ident">expr</span>)).<span class="ident">collect</span>();
                 <span class="self">self</span>.<span class="ident">alloc_expr</span>(<span class="ident">Expr</span>::<span class="ident">Tuple</span> { <span class="ident">exprs</span> }, <span class="ident">syntax_ptr</span>)
             }
+
             <span class="ident">ast</span>::<span class="ident">ExprKind</span>::<span class="ident">ArrayExpr</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> {
-                <span class="kw">let</span> <span class="ident">exprs</span> <span class="op">=</span> <span class="ident">e</span>.<span class="ident">exprs</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">expr</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">collect_expr</span>(<span class="ident">expr</span>)).<span class="ident">collect</span>();
-                <span class="self">self</span>.<span class="ident">alloc_expr</span>(<span class="ident">Expr</span>::<span class="ident">Array</span> { <span class="ident">exprs</span> }, <span class="ident">syntax_ptr</span>)
+                <span class="kw">let</span> <span class="ident">kind</span> <span class="op">=</span> <span class="ident">e</span>.<span class="ident">kind</span>();
+
+                <span class="kw">match</span> <span class="ident">kind</span> {
+                    <span class="ident">ArrayExprKind</span>::<span class="ident">ElementList</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> {
+                        <span class="kw">let</span> <span class="ident">exprs</span> <span class="op">=</span> <span class="ident">e</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">expr</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">collect_expr</span>(<span class="ident">expr</span>)).<span class="ident">collect</span>();
+                        <span class="self">self</span>.<span class="ident">alloc_expr</span>(<span class="ident">Expr</span>::<span class="ident">Array</span>(<span class="ident">Array</span>::<span class="ident">ElementList</span>(<span class="ident">exprs</span>)), <span class="ident">syntax_ptr</span>)
+                    }
+                    <span class="ident">ArrayExprKind</span>::<span class="ident">Repeat</span> { <span class="ident">initializer</span>, <span class="ident">repeat</span> } <span class="op">=&gt;</span> {
+                        <span class="kw">let</span> <span class="ident">initializer</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">collect_expr_opt</span>(<span class="ident">initializer</span>);
+                        <span class="kw">let</span> <span class="ident">repeat</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">collect_expr_opt</span>(<span class="ident">repeat</span>);
+                        <span class="self">self</span>.<span class="ident">alloc_expr</span>(
+                            <span class="ident">Expr</span>::<span class="ident">Array</span>(<span class="ident">Array</span>::<span class="ident">Repeat</span> { <span class="ident">initializer</span>, <span class="ident">repeat</span> }),
+                            <span class="ident">syntax_ptr</span>,
+                        )
+                    }
+                }
             }
+
             <span class="ident">ast</span>::<span class="ident">ExprKind</span>::<span class="ident">Literal</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> {
                 <span class="kw">let</span> <span class="ident">lit</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">e</span>.<span class="ident">kind</span>() {
                     <span class="ident">LiteralKind</span>::<span class="ident">IntNumber</span> { <span class="ident">suffix</span> } <span class="op">=&gt;</span> {
