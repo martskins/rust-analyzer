@@ -202,6 +202,10 @@
 <span id="202">202</span>
 <span id="203">203</span>
 <span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! This is the actual &quot;grammar&quot; of the Rust language.</span>
 <span class="doccomment">//!</span>
@@ -252,6 +256,10 @@
     <span class="ident">p</span>.<span class="ident">eat</span>(<span class="ident">SHEBANG</span>);
     <span class="ident">items</span>::<span class="ident">mod_contents</span>(<span class="ident">p</span>, <span class="bool-val">false</span>);
     <span class="ident">m</span>.<span class="ident">complete</span>(<span class="ident">p</span>, <span class="ident">SOURCE_FILE</span>);
+}
+
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">path</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Parser</span>) {
+    <span class="ident">paths</span>::<span class="ident">type_path</span>(<span class="ident">p</span>);
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">reparser</span>(
