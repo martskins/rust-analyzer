@@ -118,14 +118,32 @@
 <span id="118">118</span>
 <span id="119">119</span>
 <span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
-<span class="kw">use</span> <span class="ident">ra_syntax</span>::{<span class="ident">SyntaxNode</span>, <span class="ident">TreeArc</span>, <span class="ident">SourceFile</span>};
+<span class="kw">use</span> <span class="ident">ra_syntax</span>::{<span class="ident">SyntaxNode</span>, <span class="ident">TreeArc</span>, <span class="ident">SourceFile</span>, <span class="ident">ast</span>};
 <span class="kw">use</span> <span class="ident">ra_db</span>::{<span class="ident">SourceDatabase</span>, <span class="ident">salsa</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">HirFileId</span>, <span class="ident">MacroDefId</span>, <span class="ident">AstIdMap</span>, <span class="ident">ErasedFileAstId</span>, <span class="ident">Crate</span>, <span class="ident">Module</span>, <span class="ident">HirInterner</span>,
+    <span class="ident">HirFileId</span>, <span class="ident">MacroDefId</span>, <span class="ident">AstIdMap</span>, <span class="ident">ErasedFileAstId</span>, <span class="ident">Crate</span>, <span class="ident">Module</span>, <span class="ident">MacroCallLoc</span>,
     <span class="ident">Function</span>, <span class="ident">FnSignature</span>, <span class="ident">ExprScopes</span>, <span class="ident">TypeAlias</span>,
     <span class="ident">Struct</span>, <span class="ident">Enum</span>, <span class="ident">StructField</span>,
     <span class="ident">Const</span>, <span class="ident">ConstSignature</span>, <span class="ident">Static</span>,
@@ -136,11 +154,29 @@
     <span class="ident">impl_block</span>::{<span class="ident">ModuleImplBlocks</span>, <span class="ident">ImplSourceMap</span>},
     <span class="ident">generics</span>::{<span class="ident">GenericParams</span>, <span class="ident">GenericDef</span>},
     <span class="ident">type_ref</span>::<span class="ident">TypeRef</span>,
-    <span class="ident">traits</span>::<span class="ident">TraitData</span>, <span class="ident">Trait</span>, <span class="ident">ty</span>::<span class="ident">TraitRef</span>
+    <span class="ident">traits</span>::<span class="ident">TraitData</span>, <span class="ident">Trait</span>, <span class="ident">ty</span>::<span class="ident">TraitRef</span>,
+    <span class="ident">ids</span>
 };
 
 <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">query_group</span>(<span class="ident">DefDatabaseStorage</span>)]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">DefDatabase</span>: <span class="ident">SourceDatabase</span> <span class="op">+</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">HirInterner</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">DefDatabase</span>: <span class="ident">SourceDatabase</span> {
+    <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">interned</span>]</span>
+    <span class="kw">fn</span> <span class="ident">intern_macro</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">macro_call</span>: <span class="ident">MacroCallLoc</span>) <span class="op">-&gt;</span> <span class="ident">ids</span>::<span class="ident">MacroCallId</span>;
+    <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">interned</span>]</span>
+    <span class="kw">fn</span> <span class="ident">intern_function</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">loc</span>: <span class="ident">ids</span>::<span class="ident">ItemLoc</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">FnDef</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">ids</span>::<span class="ident">FunctionId</span>;
+    <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">interned</span>]</span>
+    <span class="kw">fn</span> <span class="ident">intern_struct</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">loc</span>: <span class="ident">ids</span>::<span class="ident">ItemLoc</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">StructDef</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">ids</span>::<span class="ident">StructId</span>;
+    <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">interned</span>]</span>
+    <span class="kw">fn</span> <span class="ident">intern_enum</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">loc</span>: <span class="ident">ids</span>::<span class="ident">ItemLoc</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">EnumDef</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">ids</span>::<span class="ident">EnumId</span>;
+    <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">interned</span>]</span>
+    <span class="kw">fn</span> <span class="ident">intern_const</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">loc</span>: <span class="ident">ids</span>::<span class="ident">ItemLoc</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">ConstDef</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">ids</span>::<span class="ident">ConstId</span>;
+    <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">interned</span>]</span>
+    <span class="kw">fn</span> <span class="ident">intern_static</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">loc</span>: <span class="ident">ids</span>::<span class="ident">ItemLoc</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">StaticDef</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">ids</span>::<span class="ident">StaticId</span>;
+    <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">interned</span>]</span>
+    <span class="kw">fn</span> <span class="ident">intern_trait</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">loc</span>: <span class="ident">ids</span>::<span class="ident">ItemLoc</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">TraitDef</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">ids</span>::<span class="ident">TraitId</span>;
+    <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">interned</span>]</span>
+    <span class="kw">fn</span> <span class="ident">intern_type_alias</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">loc</span>: <span class="ident">ids</span>::<span class="ident">ItemLoc</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">TypeAliasDef</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">ids</span>::<span class="ident">TypeAliasId</span>;
+
     <span class="attribute">#[<span class="ident">salsa</span>::<span class="ident">invoke</span>(<span class="kw">crate</span>::<span class="ident">ids</span>::<span class="ident">macro_def_query</span>)]</span>
     <span class="kw">fn</span> <span class="ident">macro_def</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">macro_id</span>: <span class="ident">MacroDefId</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">mbe</span>::<span class="ident">MacroRules</span><span class="op">&gt;&gt;</span>;
 
