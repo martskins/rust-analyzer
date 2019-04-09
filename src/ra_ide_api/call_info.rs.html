@@ -399,6 +399,42 @@
 <span id="399">399</span>
 <span id="400">400</span>
 <span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">test_utils</span>::<span class="ident">tested_by</span>;
 <span class="kw">use</span> <span class="ident">ra_db</span>::<span class="ident">SourceDatabase</span>;
@@ -408,9 +444,8 @@
     <span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">ArgListOwner</span>},
     <span class="ident">algo</span>::<span class="ident">find_node_at_offset</span>,
 };
-<span class="kw">use</span> <span class="ident">hir</span>::<span class="ident">Docs</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">FilePosition</span>, <span class="ident">CallInfo</span>, <span class="ident">db</span>::<span class="ident">RootDatabase</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">FilePosition</span>, <span class="ident">CallInfo</span>, <span class="ident">FunctionSignature</span>, <span class="ident">db</span>::<span class="ident">RootDatabase</span>};
 
 <span class="doccomment">/// Computes parameter information for the given call expression.</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">call_info</span>(<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">RootDatabase</span>, <span class="ident">position</span>: <span class="ident">FilePosition</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CallInfo</span><span class="op">&gt;</span> {
@@ -429,10 +464,10 @@
     <span class="kw">let</span> <span class="ident">fn_def</span> <span class="op">=</span> <span class="ident">ast</span>::<span class="ident">FnDef</span>::<span class="ident">cast</span>(<span class="ident">fn_def</span>).<span class="ident">unwrap</span>();
     <span class="kw">let</span> <span class="ident">function</span> <span class="op">=</span> <span class="ident">hir</span>::<span class="ident">source_binder</span>::<span class="ident">function_from_source</span>(<span class="ident">db</span>, <span class="ident">symbol</span>.<span class="ident">file_id</span>, <span class="ident">fn_def</span>)<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">call_info</span> <span class="op">=</span> <span class="ident">CallInfo</span>::<span class="ident">new</span>(<span class="ident">db</span>, <span class="ident">function</span>, <span class="ident">fn_def</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">call_info</span> <span class="op">=</span> <span class="ident">CallInfo</span>::<span class="ident">new</span>(<span class="ident">db</span>, <span class="ident">function</span>);
 
     <span class="comment">// If we have a calling expression let&#39;s find which argument we are on</span>
-    <span class="kw">let</span> <span class="ident">num_params</span> <span class="op">=</span> <span class="ident">call_info</span>.<span class="ident">parameters</span>.<span class="ident">len</span>();
+    <span class="kw">let</span> <span class="ident">num_params</span> <span class="op">=</span> <span class="ident">call_info</span>.<span class="ident">parameters</span>().<span class="ident">len</span>();
     <span class="kw">let</span> <span class="ident">has_self</span> <span class="op">=</span> <span class="ident">fn_def</span>.<span class="ident">param_list</span>().<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="ident">l</span>.<span class="ident">self_param</span>()).<span class="ident">is_some</span>();
 
     <span class="kw">if</span> <span class="ident">num_params</span> <span class="op">==</span> <span class="number">1</span> {
@@ -509,28 +544,15 @@
 }
 
 <span class="kw">impl</span> <span class="ident">CallInfo</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">RootDatabase</span>, <span class="ident">function</span>: <span class="ident">hir</span>::<span class="ident">Function</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="ident">ast</span>::<span class="ident">FnDef</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">label</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">completion</span>::<span class="ident">function_label</span>(<span class="ident">node</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">doc</span> <span class="op">=</span> <span class="ident">function</span>.<span class="ident">docs</span>(<span class="ident">db</span>);
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">RootDatabase</span>, <span class="ident">function</span>: <span class="ident">hir</span>::<span class="ident">Function</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">signature</span> <span class="op">=</span> <span class="ident">FunctionSignature</span>::<span class="ident">from_hir</span>(<span class="ident">db</span>, <span class="ident">function</span>);
 
-        <span class="prelude-val">Some</span>(<span class="ident">CallInfo</span> { <span class="ident">parameters</span>: <span class="ident">param_list</span>(<span class="ident">node</span>), <span class="ident">label</span>, <span class="ident">doc</span>, <span class="ident">active_parameter</span>: <span class="prelude-val">None</span> })
+        <span class="ident">CallInfo</span> { <span class="ident">signature</span>, <span class="ident">active_parameter</span>: <span class="prelude-val">None</span> }
     }
-}
 
-<span class="kw">fn</span> <span class="ident">param_list</span>(<span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="ident">ast</span>::<span class="ident">FnDef</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">param_list</span>) <span class="op">=</span> <span class="ident">node</span>.<span class="ident">param_list</span>() {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">self_param</span>) <span class="op">=</span> <span class="ident">param_list</span>.<span class="ident">self_param</span>() {
-            <span class="ident">res</span>.<span class="ident">push</span>(<span class="ident">self_param</span>.<span class="ident">syntax</span>().<span class="ident">text</span>().<span class="ident">to_string</span>())
-        }
-
-        <span class="comment">// Maybe use param.pat here? See if we can just extract the name?</span>
-        <span class="comment">//res.extend(param_list.params().map(|p| p.syntax().text().to_string()));</span>
-        <span class="ident">res</span>.<span class="ident">extend</span>(
-            <span class="ident">param_list</span>.<span class="ident">params</span>().<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">pat</span>()).<span class="ident">map</span>(<span class="op">|</span><span class="ident">pat</span><span class="op">|</span> <span class="ident">pat</span>.<span class="ident">syntax</span>().<span class="ident">text</span>().<span class="ident">to_string</span>()),
-        );
+    <span class="kw">fn</span> <span class="ident">parameters</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">String</span>] {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">signature</span>.<span class="ident">parameters</span>
     }
-    <span class="ident">res</span>
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
@@ -540,6 +562,17 @@
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">mock_analysis</span>::<span class="ident">single_file_with_position</span>;
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+
+    <span class="comment">// These are only used when testing</span>
+    <span class="kw">impl</span> <span class="ident">CallInfo</span> {
+        <span class="kw">fn</span> <span class="ident">doc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">hir</span>::<span class="ident">Documentation</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">signature</span>.<span class="ident">doc</span>.<span class="ident">clone</span>()
+        }
+
+        <span class="kw">fn</span> <span class="ident">label</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
+            <span class="self">self</span>.<span class="ident">signature</span>.<span class="ident">to_string</span>()
+        }
+    }
 
     <span class="kw">fn</span> <span class="ident">call_info</span>(<span class="ident">text</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">CallInfo</span> {
         <span class="kw">let</span> (<span class="ident">analysis</span>, <span class="ident">position</span>) <span class="op">=</span> <span class="ident">single_file_with_position</span>(<span class="ident">text</span>);
@@ -553,7 +586,7 @@
 fn bar() { foo(&lt;|&gt;3, ); }&quot;#</span>,
         );
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>, <span class="macro">vec</span><span class="macro">!</span>(<span class="string">&quot;x&quot;</span>.<span class="ident">to_string</span>(), <span class="string">&quot;y&quot;</span>.<span class="ident">to_string</span>()));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>(), [<span class="string">&quot;x: u32&quot;</span>, <span class="string">&quot;y: u32&quot;</span>]);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">active_parameter</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>));
     }
 
@@ -564,7 +597,7 @@ fn bar() { foo(&lt;|&gt;3, ); }&quot;#</span>,
 fn bar() { foo(3, &lt;|&gt;); }&quot;#</span>,
         );
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>, <span class="macro">vec</span><span class="macro">!</span>(<span class="string">&quot;x&quot;</span>.<span class="ident">to_string</span>(), <span class="string">&quot;y&quot;</span>.<span class="ident">to_string</span>()));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>(), [<span class="string">&quot;x: u32&quot;</span>, <span class="string">&quot;y: u32&quot;</span>]);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">active_parameter</span>, <span class="prelude-val">Some</span>(<span class="number">1</span>));
     }
 
@@ -575,8 +608,47 @@ fn bar() { foo(3, &lt;|&gt;); }&quot;#</span>,
 fn bar() { foo(&lt;|&gt;); }&quot;#</span>,
         );
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>, <span class="macro">vec</span><span class="macro">!</span>(<span class="string">&quot;x&quot;</span>.<span class="ident">to_string</span>(), <span class="string">&quot;y&quot;</span>.<span class="ident">to_string</span>()));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>(), [<span class="string">&quot;x: u32&quot;</span>, <span class="string">&quot;y: u32&quot;</span>]);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">active_parameter</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>));
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_fn_signature_two_args_first_generics</span>() {
+        <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">call_info</span>(
+            <span class="string">r#&quot;fn foo&lt;T, U: Copy + Display&gt;(x: T, y: U) -&gt; u32 where T: Copy + Display, U: Debug {x + y}
+fn bar() { foo(&lt;|&gt;3, ); }&quot;#</span>,
+        );
+
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>(), [<span class="string">&quot;x: T&quot;</span>, <span class="string">&quot;y: U&quot;</span>]);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">info</span>.<span class="ident">label</span>(),
+            <span class="string">r#&quot;
+fn foo&lt;T, U: Copy + Display&gt;(x: T, y: U) -&gt; u32
+where T: Copy + Display,
+      U: Debug
+    &quot;#</span>
+            .<span class="ident">trim</span>()
+        );
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">active_parameter</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>));
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_fn_signature_no_params</span>() {
+        <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">call_info</span>(
+            <span class="string">r#&quot;fn foo&lt;T&gt;() -&gt; T where T: Copy + Display {}
+fn bar() { foo(&lt;|&gt;); }&quot;#</span>,
+        );
+
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>().<span class="ident">is_empty</span>());
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">info</span>.<span class="ident">label</span>(),
+            <span class="string">r#&quot;
+fn foo&lt;T&gt;() -&gt; T
+where T: Copy + Display
+    &quot;#</span>
+            .<span class="ident">trim</span>()
+        );
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">active_parameter</span>.<span class="ident">is_none</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -586,7 +658,7 @@ fn bar() { foo(&lt;|&gt;); }&quot;#</span>,
 fn bar() {let _ : F = F::new(&lt;|&gt;);}&quot;#</span>,
         );
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>, <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>::<span class="ident">new</span>());
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>().<span class="ident">is_empty</span>());
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">active_parameter</span>, <span class="prelude-val">None</span>);
     }
 
@@ -608,7 +680,7 @@ fn bar() {
 }&quot;#</span>,
         );
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;&amp;self&quot;</span>.<span class="ident">to_string</span>()]);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>(), [<span class="string">&quot;&amp;self&quot;</span>]);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">active_parameter</span>, <span class="prelude-val">None</span>);
     }
 
@@ -630,7 +702,7 @@ fn bar() {
 }&quot;#</span>,
         );
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;&amp;self&quot;</span>.<span class="ident">to_string</span>(), <span class="string">&quot;x&quot;</span>.<span class="ident">to_string</span>()]);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>(), [<span class="string">&quot;&amp;self&quot;</span>, <span class="string">&quot;x: i32&quot;</span>]);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">active_parameter</span>, <span class="prelude-val">Some</span>(<span class="number">1</span>));
     }
 
@@ -650,10 +722,10 @@ fn bar() {
 &quot;#</span>,
         );
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;j&quot;</span>.<span class="ident">to_string</span>()]);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>(), [<span class="string">&quot;j: u32&quot;</span>]);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">active_parameter</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">label</span>, <span class="string">&quot;fn foo(j: u32) -&gt; u32&quot;</span>.<span class="ident">to_string</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">doc</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">into</span>()), <span class="prelude-val">Some</span>(<span class="string">&quot;test&quot;</span>.<span class="ident">to_string</span>()));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">label</span>(), <span class="string">&quot;fn foo(j: u32) -&gt; u32&quot;</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">doc</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">into</span>()), <span class="prelude-val">Some</span>(<span class="string">&quot;test&quot;</span>.<span class="ident">to_string</span>()));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -678,11 +750,11 @@ pub fn do() {
 }&quot;#</span>,
         );
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;x&quot;</span>.<span class="ident">to_string</span>()]);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>(), [<span class="string">&quot;x: i32&quot;</span>]);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">active_parameter</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">label</span>, <span class="string">&quot;pub fn add_one(x: i32) -&gt; i32&quot;</span>.<span class="ident">to_string</span>());
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">label</span>(), <span class="string">&quot;pub fn add_one(x: i32) -&gt; i32&quot;</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(
-            <span class="ident">info</span>.<span class="ident">doc</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">into</span>()),
+            <span class="ident">info</span>.<span class="ident">doc</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">into</span>()),
             <span class="prelude-val">Some</span>(
                 <span class="string">r#&quot;Adds one to the number given.
 
@@ -724,11 +796,11 @@ pub fn do_it() {
 }&quot;#</span>,
         );
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;x&quot;</span>.<span class="ident">to_string</span>()]);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>(), [<span class="string">&quot;x: i32&quot;</span>]);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">active_parameter</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">label</span>, <span class="string">&quot;pub fn add_one(x: i32) -&gt; i32&quot;</span>.<span class="ident">to_string</span>());
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">label</span>(), <span class="string">&quot;pub fn add_one(x: i32) -&gt; i32&quot;</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(
-            <span class="ident">info</span>.<span class="ident">doc</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">into</span>()),
+            <span class="ident">info</span>.<span class="ident">doc</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">into</span>()),
             <span class="prelude-val">Some</span>(
                 <span class="string">r#&quot;Adds one to the number given.
 
@@ -777,10 +849,10 @@ pub fn foo() {
 &quot;#</span>,
         );
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;&amp;mut self&quot;</span>.<span class="ident">to_string</span>(), <span class="string">&quot;ctx&quot;</span>.<span class="ident">to_string</span>()]);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">parameters</span>(), [<span class="string">&quot;&amp;mut self&quot;</span>, <span class="string">&quot;ctx: &amp;mut Self::Context&quot;</span>]);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">info</span>.<span class="ident">active_parameter</span>, <span class="prelude-val">Some</span>(<span class="number">1</span>));
         <span class="macro">assert_eq</span><span class="macro">!</span>(
-            <span class="ident">info</span>.<span class="ident">doc</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">into</span>()),
+            <span class="ident">info</span>.<span class="ident">doc</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">into</span>()),
             <span class="prelude-val">Some</span>(
                 <span class="string">r#&quot;Method is called when writer finishes.
 

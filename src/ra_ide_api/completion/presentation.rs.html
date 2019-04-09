@@ -246,6 +246,9 @@
 <span id="246">246</span>
 <span id="247">247</span>
 <span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! This modules takes care of rendering various defenitions as completion items.</span>
 <span class="kw">use</span> <span class="ident">join_to_string</span>::<span class="ident">join</span>;
@@ -255,6 +258,9 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">completion</span>::{
     <span class="ident">Completions</span>, <span class="ident">CompletionKind</span>, <span class="ident">CompletionItemKind</span>, <span class="ident">CompletionContext</span>, <span class="ident">CompletionItem</span>,
+};
+
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">display</span>::{
     <span class="ident">function_label</span>, <span class="ident">const_label</span>, <span class="ident">type_label</span>,
 };
 
@@ -350,7 +356,7 @@
                 <span class="ident">CompletionItemKind</span>::<span class="ident">Function</span>
             })
             .<span class="ident">set_documentation</span>(<span class="ident">func</span>.<span class="ident">docs</span>(<span class="ident">ctx</span>.<span class="ident">db</span>))
-            .<span class="ident">set_detail</span>(<span class="ident">detail</span>);
+            .<span class="ident">detail</span>(<span class="ident">detail</span>);
         <span class="comment">// If not an import, add parenthesis automatically.</span>
         <span class="kw">if</span> <span class="ident">ctx</span>.<span class="ident">use_item_syntax</span>.<span class="ident">is_none</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">ctx</span>.<span class="ident">is_call</span> {
             <span class="macro">tested_by</span><span class="macro">!</span>(<span class="ident">inserts_parens_for_function_calls</span>);
