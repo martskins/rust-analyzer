@@ -547,8 +547,6 @@
 <span id="547">547</span>
 <span id="548">548</span>
 <span id="549">549</span>
-<span id="550">550</span>
-<span id="551">551</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! This module defines Concrete Syntax Tree (CST), used by rust-analyzer.</span>
 <span class="doccomment">//!</span>
@@ -560,11 +558,12 @@
 
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Write</span>},
+    <span class="ident">any</span>::<span class="ident">Any</span>,
     <span class="ident">borrow</span>::<span class="ident">Borrow</span>,
 };
 
 <span class="kw">use</span> <span class="ident">ra_parser</span>::<span class="ident">ParseError</span>;
-<span class="kw">use</span> <span class="ident">rowan</span>::{<span class="ident">Types</span>, <span class="ident">TransparentNewType</span>, <span class="ident">GreenNodeBuilder</span>};
+<span class="kw">use</span> <span class="ident">rowan</span>::{<span class="ident">TransparentNewType</span>, <span class="ident">GreenNodeBuilder</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">SmolStr</span>, <span class="ident">SyntaxKind</span>, <span class="ident">TextUnit</span>, <span class="ident">TextRange</span>, <span class="ident">SyntaxText</span>, <span class="ident">SourceFile</span>, <span class="ident">AstNode</span>,
@@ -572,26 +571,15 @@
 };
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">rowan</span>::<span class="ident">WalkEvent</span>;
-
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RaTypes</span> {}
-<span class="kw">impl</span> <span class="ident">Types</span> <span class="kw">for</span> <span class="ident">RaTypes</span> {
-    <span class="kw">type</span> <span class="ident">Kind</span> <span class="op">=</span> <span class="ident">SyntaxKind</span>;
-    <span class="kw">type</span> <span class="ident">RootData</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SyntaxError</span><span class="op">&gt;</span>;
-}
-
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">GreenNode</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">GreenNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">GreenToken</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">GreenToken</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">GreenElement</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">GreenElement</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">rowan</span>::{<span class="ident">GreenNode</span>, <span class="ident">GreenToken</span>};
 
 <span class="doccomment">/// Marker trait for CST and AST nodes</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">SyntaxNodeWrapper</span>: <span class="ident">TransparentNewType</span><span class="op">&lt;</span><span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;&gt;</span> {}
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">TransparentNewType</span><span class="op">&lt;</span><span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span> <span class="ident">SyntaxNodeWrapper</span> <span class="kw">for</span> <span class="ident">T</span> {}
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">SyntaxNodeWrapper</span>: <span class="ident">TransparentNewType</span><span class="op">&lt;</span><span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&gt;</span> {}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">TransparentNewType</span><span class="op">&lt;</span><span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&gt;&gt;</span> <span class="ident">SyntaxNodeWrapper</span> <span class="kw">for</span> <span class="ident">T</span> {}
 
 <span class="doccomment">/// An owning smart pointer for CST or AST node.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TreeArc</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">SyntaxNodeWrapper</span><span class="op">&gt;</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">rowan</span>::<span class="ident">TreeArc</span><span class="op">&lt;</span><span class="ident">RaTypes</span>, <span class="ident">T</span><span class="op">&gt;</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TreeArc</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">SyntaxNodeWrapper</span><span class="op">&gt;</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">rowan</span>::<span class="ident">TreeArc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">SyntaxNodeWrapper</span><span class="op">&gt;</span> <span class="ident">Borrow</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TreeArc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">borrow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">T</span> {
@@ -653,9 +641,9 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SyntaxNode</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SyntaxNode</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>);
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">SyntaxNode</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">ToOwned</span> <span class="kw">for</span> <span class="ident">SyntaxNode</span> {
@@ -686,12 +674,14 @@
 
 <span class="kw">impl</span> <span class="ident">SyntaxNode</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">green</span>: <span class="ident">GreenNode</span>, <span class="ident">errors</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SyntaxError</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">TreeArc</span><span class="op">&lt;</span><span class="ident">SyntaxNode</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">errors</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;&gt;</span> <span class="op">=</span>
+            <span class="kw">if</span> <span class="ident">errors</span>.<span class="ident">is_empty</span>() { <span class="prelude-val">None</span> } <span class="kw">else</span> { <span class="prelude-val">Some</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">errors</span>)) };
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">TreeArc</span>(<span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>::<span class="ident">new</span>(<span class="ident">green</span>, <span class="ident">errors</span>));
         <span class="ident">TreeArc</span>::<span class="ident">cast</span>(<span class="ident">ptr</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kind</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">SyntaxKind</span> {
-        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">kind</span>()
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">kind</span>().<span class="number">0</span>.<span class="ident">into</span>()
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">range</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">TextRange</span> {
@@ -855,8 +845,14 @@
         <span class="ident">buf</span>
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">root_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SyntaxError</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">root_data</span>()
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">root_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">SyntaxError</span>] {
+        <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">root_data</span>() {
+            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw-2">&amp;</span>[],
+            <span class="prelude-val">Some</span>(<span class="ident">data</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SyntaxError</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">any</span>::<span class="ident">Any</span>::<span class="ident">downcast_ref</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
+                <span class="ident">data</span>.<span class="ident">as_slice</span>()
+            }
+        }
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">replace_with</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">replacement</span>: <span class="ident">GreenNode</span>) <span class="op">-&gt;</span> <span class="ident">GreenNode</span> {
@@ -865,7 +861,7 @@
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SyntaxToken</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">rowan</span>::<span class="ident">SyntaxToken</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">RaTypes</span><span class="op">&gt;</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SyntaxToken</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">rowan</span>::<span class="ident">SyntaxToken</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>);
 
 <span class="comment">//FIXME: always output text</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">SyntaxToken</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
@@ -891,15 +887,15 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">rowan</span>::<span class="ident">SyntaxToken</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">RaTypes</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">SyntaxToken</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="ident">rowan</span>::<span class="ident">SyntaxToken</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">RaTypes</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">rowan</span>::<span class="ident">SyntaxToken</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">SyntaxToken</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="ident">rowan</span>::<span class="ident">SyntaxToken</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">SyntaxToken</span>(<span class="ident">t</span>)
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">SyntaxToken</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kind</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">SyntaxKind</span> {
-        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">kind</span>()
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">kind</span>().<span class="number">0</span>.<span class="ident">into</span>()
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">text</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">SmolStr</span> {
@@ -1006,8 +1002,8 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">rowan</span>::<span class="ident">SyntaxElement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">RaTypes</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">SyntaxElement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">el</span>: <span class="ident">rowan</span>::<span class="ident">SyntaxElement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">RaTypes</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">rowan</span>::<span class="ident">SyntaxElement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">SyntaxElement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">el</span>: <span class="ident">rowan</span>::<span class="ident">SyntaxElement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">el</span> {
             <span class="ident">rowan</span>::<span class="ident">SyntaxElement</span>::<span class="ident">Node</span>(<span class="ident">n</span>) <span class="op">=&gt;</span> <span class="ident">SyntaxElement</span>::<span class="ident">Node</span>(<span class="ident">SyntaxNode</span>::<span class="ident">from_repr</span>(<span class="ident">n</span>)),
             <span class="ident">rowan</span>::<span class="ident">SyntaxElement</span>::<span class="ident">Token</span>(<span class="ident">t</span>) <span class="op">=&gt;</span> <span class="ident">SyntaxElement</span>::<span class="ident">Token</span>(<span class="ident">t</span>.<span class="ident">into</span>()),
@@ -1037,7 +1033,7 @@
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SyntaxNodeChildren</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">rowan</span>::<span class="ident">SyntaxNodeChildren</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">RaTypes</span><span class="op">&gt;</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SyntaxNodeChildren</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">rowan</span>::<span class="ident">SyntaxNodeChildren</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">SyntaxNodeChildren</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">SyntaxNode</span>;
@@ -1048,7 +1044,7 @@
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SyntaxElementChildren</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">rowan</span>::<span class="ident">SyntaxElementChildren</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">RaTypes</span><span class="op">&gt;</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SyntaxElementChildren</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">rowan</span>::<span class="ident">SyntaxElementChildren</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">SyntaxElementChildren</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">SyntaxElement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
@@ -1060,7 +1056,7 @@
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SyntaxTreeBuilder</span> {
     <span class="ident">errors</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SyntaxError</span><span class="op">&gt;</span>,
-    <span class="ident">inner</span>: <span class="ident">GreenNodeBuilder</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">GreenNodeBuilder</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">SyntaxTreeBuilder</span> {
@@ -1085,11 +1081,11 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">token</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">kind</span>: <span class="ident">SyntaxKind</span>, <span class="ident">text</span>: <span class="ident">SmolStr</span>) {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">token</span>(<span class="ident">kind</span>, <span class="ident">text</span>)
+        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">token</span>(<span class="ident">rowan</span>::<span class="ident">SyntaxKind</span>(<span class="ident">kind</span>.<span class="ident">into</span>()), <span class="ident">text</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">start_node</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">kind</span>: <span class="ident">SyntaxKind</span>) {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">start_node</span>(<span class="ident">kind</span>)
+        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">start_node</span>(<span class="ident">rowan</span>::<span class="ident">SyntaxKind</span>(<span class="ident">kind</span>.<span class="ident">into</span>()))
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">finish_node</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {

@@ -458,7 +458,7 @@
                 }
             }
 
-            <span class="kw">let</span> <span class="ident">new_token</span> <span class="op">=</span> <span class="ident">GreenToken</span>::<span class="ident">new</span>(<span class="ident">token</span>.<span class="ident">kind</span>(), <span class="ident">text</span>.<span class="ident">into</span>());
+            <span class="kw">let</span> <span class="ident">new_token</span> <span class="op">=</span> <span class="ident">GreenToken</span>::<span class="ident">new</span>(<span class="ident">rowan</span>::<span class="ident">SyntaxKind</span>(<span class="ident">token</span>.<span class="ident">kind</span>().<span class="ident">into</span>()), <span class="ident">text</span>.<span class="ident">into</span>());
             <span class="prelude-val">Some</span>((<span class="ident">token</span>.<span class="ident">replace_with</span>(<span class="ident">new_token</span>), <span class="ident">token</span>.<span class="ident">range</span>()))
         }
         <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,

@@ -4399,7 +4399,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">SyntaxNode</span>, <span class="ident">SyntaxKind</span>::<span class="kw-2">*</span>,
-    <span class="ident">syntax_node</span>::{<span class="ident">RaTypes</span>, <span class="ident">TreeArc</span>},
+    <span class="ident">syntax_node</span>::{<span class="ident">TreeArc</span>},
     <span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">AstNode</span>},
 };
 
@@ -4410,7 +4410,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">Alias</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">Alias</span> {
@@ -4439,7 +4439,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ArgList</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ArgList</span> {
@@ -4471,7 +4471,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ArrayExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ArrayExpr</span> {
@@ -4503,7 +4503,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ArrayType</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ArrayType</span> {
@@ -4539,7 +4539,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">AssocTypeArg</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">AssocTypeArg</span> {
@@ -4575,7 +4575,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">Attr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">Attr</span> {
@@ -4607,7 +4607,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">BinExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">BinExpr</span> {
@@ -4635,7 +4635,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">BindPat</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">BindPat</span> {
@@ -4668,7 +4668,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">Block</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">Block</span> {
@@ -4705,7 +4705,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">BlockExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">BlockExpr</span> {
@@ -4737,7 +4737,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">BreakExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">BreakExpr</span> {
@@ -4769,7 +4769,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">CallExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">CallExpr</span> {
@@ -4802,7 +4802,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">CastExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">CastExpr</span> {
@@ -4838,7 +4838,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">Condition</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">Condition</span> {
@@ -4874,7 +4874,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ConstDef</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ConstDef</span> {
@@ -4912,7 +4912,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ContinueExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ContinueExpr</span> {
@@ -4940,7 +4940,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">DynTraitType</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">DynTraitType</span> {
@@ -4969,7 +4969,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">EnumDef</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">EnumDef</span> {
@@ -5006,7 +5006,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">EnumVariant</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">EnumVariant</span> {
@@ -5041,7 +5041,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">EnumVariantList</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">EnumVariantList</span> {
@@ -5073,7 +5073,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">Expr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
@@ -5336,7 +5336,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ExprStmt</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ExprStmt</span> {
@@ -5368,7 +5368,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ExternCrateItem</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ExternCrateItem</span> {
@@ -5404,7 +5404,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">FieldExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">FieldExpr</span> {
@@ -5440,7 +5440,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">FieldPat</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">FieldPat</span> {
@@ -5473,7 +5473,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">FieldPatList</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">FieldPatList</span> {
@@ -5509,7 +5509,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">FnDef</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">FnDef</span> {
@@ -5554,7 +5554,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">FnPointerType</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">FnPointerType</span> {
@@ -5590,7 +5590,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ForExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ForExpr</span> {
@@ -5627,7 +5627,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ForType</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ForType</span> {
@@ -5659,7 +5659,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">IfExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">IfExpr</span> {
@@ -5691,7 +5691,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ImplBlock</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ImplBlock</span> {
@@ -5724,7 +5724,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ImplItem</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
@@ -5787,7 +5787,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ImplTraitType</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ImplTraitType</span> {
@@ -5816,7 +5816,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">IndexExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">IndexExpr</span> {
@@ -5844,7 +5844,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ItemList</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ItemList</span> {
@@ -5878,7 +5878,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">Label</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">Label</span> {
@@ -5906,7 +5906,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">LambdaExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">LambdaExpr</span> {
@@ -5942,7 +5942,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">LetStmt</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">LetStmt</span> {
@@ -5979,7 +5979,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">LifetimeArg</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">LifetimeArg</span> {
@@ -6007,7 +6007,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">LifetimeParam</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">LifetimeParam</span> {
@@ -6036,7 +6036,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">Literal</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">Literal</span> {
@@ -6064,7 +6064,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">LiteralPat</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">LiteralPat</span> {
@@ -6096,7 +6096,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">LoopExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">LoopExpr</span> {
@@ -6125,7 +6125,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">MacroCall</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">MacroCall</span> {
@@ -6163,7 +6163,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">MatchArm</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">MatchArm</span> {
@@ -6204,7 +6204,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">MatchArmList</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">MatchArmList</span> {
@@ -6237,7 +6237,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">MatchExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">MatchExpr</span> {
@@ -6273,7 +6273,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">MatchGuard</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">MatchGuard</span> {
@@ -6305,7 +6305,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">MethodCallExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">MethodCallExpr</span> {
@@ -6346,7 +6346,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">Module</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">Module</span> {
@@ -6382,7 +6382,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ModuleItem</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
@@ -6509,7 +6509,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">Name</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">Name</span> {
@@ -6537,7 +6537,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">NameRef</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">NameRef</span> {
@@ -6565,7 +6565,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">NamedField</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">NamedField</span> {
@@ -6601,7 +6601,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">NamedFieldDef</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">NamedFieldDef</span> {
@@ -6634,7 +6634,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">NamedFieldDefList</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">NamedFieldDefList</span> {
@@ -6666,7 +6666,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">NamedFieldList</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">NamedFieldList</span> {
@@ -6698,7 +6698,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">NeverType</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">NeverType</span> {
@@ -6726,7 +6726,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">NominalDef</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
@@ -6784,7 +6784,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">Param</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">Param</span> {
@@ -6817,7 +6817,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ParamList</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ParamList</span> {
@@ -6853,7 +6853,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ParenExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ParenExpr</span> {
@@ -6885,7 +6885,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ParenType</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ParenType</span> {
@@ -6917,7 +6917,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">Pat</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
@@ -7036,7 +7036,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">Path</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">Path</span> {
@@ -7072,7 +7072,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">PathExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">PathExpr</span> {
@@ -7104,7 +7104,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">PathPat</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">PathPat</span> {
@@ -7136,7 +7136,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">PathSegment</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">PathSegment</span> {
@@ -7172,7 +7172,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">PathType</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">PathType</span> {
@@ -7204,7 +7204,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">PlaceholderPat</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">PlaceholderPat</span> {
@@ -7232,7 +7232,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">PlaceholderType</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">PlaceholderType</span> {
@@ -7260,7 +7260,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">PointerType</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">PointerType</span> {
@@ -7292,7 +7292,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">PosFieldDef</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">PosFieldDef</span> {
@@ -7326,7 +7326,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">PosFieldDefList</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">PosFieldDefList</span> {
@@ -7358,7 +7358,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">PrefixExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">PrefixExpr</span> {
@@ -7390,7 +7390,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">RangeExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">RangeExpr</span> {
@@ -7418,7 +7418,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">RangePat</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">RangePat</span> {
@@ -7446,7 +7446,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">RefExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">RefExpr</span> {
@@ -7478,7 +7478,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">RefPat</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">RefPat</span> {
@@ -7510,7 +7510,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ReferenceType</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ReferenceType</span> {
@@ -7542,7 +7542,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">RetType</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">RetType</span> {
@@ -7574,7 +7574,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">ReturnExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">ReturnExpr</span> {
@@ -7606,7 +7606,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">SelfParam</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">SelfParam</span> {
@@ -7635,7 +7635,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">SlicePat</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">SlicePat</span> {
@@ -7663,7 +7663,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">SliceType</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">SliceType</span> {
@@ -7695,7 +7695,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">SourceFile</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">SourceFile</span> {
@@ -7729,7 +7729,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">StaticDef</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">StaticDef</span> {
@@ -7767,7 +7767,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">Stmt</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
@@ -7822,7 +7822,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">StructDef</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">StructDef</span> {
@@ -7855,7 +7855,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">StructLit</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">StructLit</span> {
@@ -7895,7 +7895,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">StructPat</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">StructPat</span> {
@@ -7931,7 +7931,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TokenTree</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">TokenTree</span> {
@@ -7959,7 +7959,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TraitDef</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">TraitDef</span> {
@@ -7997,7 +7997,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TryExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">TryExpr</span> {
@@ -8029,7 +8029,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TupleExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">TupleExpr</span> {
@@ -8061,7 +8061,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TuplePat</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">TuplePat</span> {
@@ -8093,7 +8093,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TupleStructPat</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">TupleStructPat</span> {
@@ -8129,7 +8129,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TupleType</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">TupleType</span> {
@@ -8161,7 +8161,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TypeAliasDef</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">TypeAliasDef</span> {
@@ -8199,7 +8199,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TypeArg</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">TypeArg</span> {
@@ -8231,7 +8231,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TypeArgList</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">TypeArgList</span> {
@@ -8271,7 +8271,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TypeBound</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">TypeBound</span> {
@@ -8303,7 +8303,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TypeBoundList</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">TypeBoundList</span> {
@@ -8335,7 +8335,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TypeParam</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">TypeParam</span> {
@@ -8366,7 +8366,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TypeParamList</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">TypeParamList</span> {
@@ -8402,7 +8402,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">TypeRef</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
@@ -8545,7 +8545,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">UseItem</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">UseItem</span> {
@@ -8578,7 +8578,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">UseTree</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">UseTree</span> {
@@ -8618,7 +8618,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">UseTreeList</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">UseTreeList</span> {
@@ -8650,7 +8650,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">Visibility</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">Visibility</span> {
@@ -8678,7 +8678,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">WhereClause</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">WhereClause</span> {
@@ -8710,7 +8710,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">WherePred</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">WherePred</span> {
@@ -8743,7 +8743,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">syntax</span>: <span class="ident">SyntaxNode</span>,
 }
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">TransparentNewType</span> <span class="kw">for</span> <span class="ident">WhileExpr</span> {
-    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span><span class="op">&lt;</span><span class="ident">RaTypes</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Repr</span> <span class="op">=</span> <span class="ident">rowan</span>::<span class="ident">SyntaxNode</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AstNode</span> <span class="kw">for</span> <span class="ident">WhileExpr</span> {
