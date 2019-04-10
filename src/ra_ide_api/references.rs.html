@@ -392,9 +392,12 @@
 <span id="392">392</span>
 <span id="393">393</span>
 <span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">relative_path</span>::{<span class="ident">RelativePath</span>, <span class="ident">RelativePathBuf</span>};
-<span class="kw">use</span> <span class="ident">hir</span>::{<span class="ident">ModuleSource</span>, <span class="ident">source_binder</span>};
+<span class="kw">use</span> <span class="ident">hir</span>::{<span class="ident">ModuleSource</span>, <span class="ident">source_binder</span>, <span class="ident">Either</span>};
 <span class="kw">use</span> <span class="ident">ra_db</span>::{<span class="ident">SourceDatabase</span>};
 <span class="kw">use</span> <span class="ident">ra_syntax</span>::{
     <span class="ident">AstNode</span>, <span class="ident">SyntaxNode</span>, <span class="ident">SourceFile</span>,
@@ -484,9 +487,12 @@
             <span class="ident">source_binder</span>::<span class="ident">function_from_child_node</span>(<span class="ident">db</span>, <span class="ident">position</span>.<span class="ident">file_id</span>, <span class="ident">name_ref</span>.<span class="ident">syntax</span>())<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">scope</span> <span class="op">=</span> <span class="ident">descr</span>.<span class="ident">scopes</span>(<span class="ident">db</span>);
         <span class="kw">let</span> <span class="ident">resolved</span> <span class="op">=</span> <span class="ident">scope</span>.<span class="ident">resolve_local_name</span>(<span class="ident">name_ref</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">resolved</span> <span class="op">=</span> <span class="ident">resolved</span>.<span class="ident">ptr</span>().<span class="ident">to_node</span>(<span class="ident">source_file</span>);
-        <span class="kw">let</span> <span class="ident">binding</span> <span class="op">=</span> <span class="ident">find_node_at_offset</span>::<span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">BindPat</span><span class="op">&gt;</span>(<span class="ident">syntax</span>, <span class="ident">resolved</span>.<span class="ident">range</span>().<span class="ident">end</span>())<span class="question-mark">?</span>;
-        <span class="prelude-val">Some</span>((<span class="ident">binding</span>, <span class="ident">descr</span>))
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Either</span>::<span class="ident">A</span>(<span class="ident">ptr</span>) <span class="op">=</span> <span class="ident">resolved</span>.<span class="ident">ptr</span>() {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ast</span>::<span class="ident">PatKind</span>::<span class="ident">BindPat</span>(<span class="ident">binding</span>) <span class="op">=</span> <span class="ident">ptr</span>.<span class="ident">to_node</span>(<span class="ident">source_file</span>).<span class="ident">kind</span>() {
+                <span class="kw">return</span> <span class="prelude-val">Some</span>((<span class="ident">binding</span>, <span class="ident">descr</span>));
+            }
+        }
+        <span class="prelude-val">None</span>
     }
 }
 

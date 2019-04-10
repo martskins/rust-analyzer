@@ -75,6 +75,9 @@
 <span id="75">75</span>
 <span id="76">76</span>
 <span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! HIR (previously known as descriptors) provides a high-level object oriented</span>
 <span class="doccomment">//! access to Rust code.</span>
@@ -94,6 +97,8 @@
         )<span class="op">*</span>
     }
 }
+
+<span class="kw">mod</span> <span class="ident">either</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">db</span>;
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
@@ -130,11 +135,12 @@
 };
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::{
+    <span class="ident">either</span>::<span class="ident">Either</span>,
     <span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathKind</span>},
     <span class="ident">name</span>::<span class="ident">Name</span>,
     <span class="ident">source_id</span>::{<span class="ident">AstIdMap</span>, <span class="ident">ErasedFileAstId</span>},
     <span class="ident">ids</span>::{<span class="ident">HirFileId</span>, <span class="ident">MacroDefId</span>, <span class="ident">MacroCallId</span>, <span class="ident">MacroCallLoc</span>},
-    <span class="ident">nameres</span>::{<span class="ident">PerNs</span>, <span class="ident">Namespace</span>, <span class="ident">ImportId</span>, <span class="ident">ImportSource</span>},
+    <span class="ident">nameres</span>::{<span class="ident">PerNs</span>, <span class="ident">Namespace</span>, <span class="ident">ImportId</span>},
     <span class="ident">ty</span>::{<span class="ident">Ty</span>, <span class="ident">ApplicationTy</span>, <span class="ident">TypeCtor</span>, <span class="ident">Substs</span>, <span class="ident">display</span>::<span class="ident">HirDisplay</span>},
     <span class="ident">impl_block</span>::{<span class="ident">ImplBlock</span>, <span class="ident">ImplItem</span>},
     <span class="ident">docs</span>::{<span class="ident">Docs</span>, <span class="ident">Documentation</span>},
