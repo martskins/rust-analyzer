@@ -99,6 +99,37 @@
 <span id="99"> 99</span>
 <span id="100">100</span>
 <span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">ra_syntax</span>::{
     <span class="ident">algo</span>::<span class="ident">visit</span>::{<span class="ident">visitor_ctx</span>, <span class="ident">VisitorCtx</span>},
@@ -156,48 +187,79 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">completion</span>::{<span class="ident">check_completion</span>, <span class="ident">CompletionKind</span>};
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">completion</span>::{<span class="ident">do_completion</span>, <span class="ident">CompletionItem</span>, <span class="ident">CompletionKind</span>};
+    <span class="kw">use</span> <span class="ident">insta</span>::<span class="ident">assert_debug_snapshot_matches</span>;
 
-    <span class="kw">fn</span> <span class="ident">check_magic_completion</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">code</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="ident">check_completion</span>(<span class="ident">name</span>, <span class="ident">code</span>, <span class="ident">CompletionKind</span>::<span class="ident">Magic</span>);
+    <span class="kw">fn</span> <span class="ident">do_magic_completion</span>(<span class="ident">code</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CompletionItem</span><span class="op">&gt;</span> {
+        <span class="ident">do_completion</span>(<span class="ident">code</span>, <span class="ident">CompletionKind</span>::<span class="ident">Magic</span>)
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_param_completion_last_param</span>() {
-        <span class="ident">check_magic_completion</span>(
-            <span class="string">&quot;param_completion_last_param&quot;</span>,
-            <span class="string">r&quot;
-            fn foo(file_id: FileId) {}
-            fn bar(file_id: FileId) {}
-            fn baz(file&lt;|&gt;) {}
-            &quot;</span>,
+        <span class="macro">assert_debug_snapshot_matches</span><span class="macro">!</span>(
+        <span class="ident">do_magic_completion</span>(
+                <span class="string">r&quot;
+                fn foo(file_id: FileId) {}
+                fn bar(file_id: FileId) {}
+                fn baz(file&lt;|&gt;) {}
+                &quot;</span>,
+        ),
+            @<span class="string">r###&quot;[
+    CompletionItem {
+        label: &quot;file_id: FileId&quot;,
+        source_range: [110; 114),
+        delete: [110; 114),
+        insert: &quot;file_id: FileId&quot;,
+        lookup: &quot;file_id&quot;
+    }
+]&quot;###</span>
         );
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_param_completion_nth_param</span>() {
-        <span class="ident">check_magic_completion</span>(
-            <span class="string">&quot;param_completion_nth_param&quot;</span>,
-            <span class="string">r&quot;
-            fn foo(file_id: FileId) {}
-            fn bar(file_id: FileId) {}
-            fn baz(file&lt;|&gt;, x: i32) {}
-            &quot;</span>,
+        <span class="macro">assert_debug_snapshot_matches</span><span class="macro">!</span>(
+        <span class="ident">do_magic_completion</span>(
+                <span class="string">r&quot;
+                fn foo(file_id: FileId) {}
+                fn bar(file_id: FileId) {}
+                fn baz(file&lt;|&gt;, x: i32) {}
+                &quot;</span>,
+        ),
+            @<span class="string">r###&quot;[
+    CompletionItem {
+        label: &quot;file_id: FileId&quot;,
+        source_range: [110; 114),
+        delete: [110; 114),
+        insert: &quot;file_id: FileId&quot;,
+        lookup: &quot;file_id&quot;
+    }
+]&quot;###</span>
         );
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_param_completion_trait_param</span>() {
-        <span class="ident">check_magic_completion</span>(
-            <span class="string">&quot;param_completion_trait_param&quot;</span>,
-            <span class="string">r&quot;
-            pub(crate) trait SourceRoot {
-                pub fn contains(&amp;self, file_id: FileId) -&gt; bool;
-                pub fn module_map(&amp;self) -&gt; &amp;ModuleMap;
-                pub fn lines(&amp;self, file_id: FileId) -&gt; &amp;LineIndex;
-                pub fn syntax(&amp;self, file&lt;|&gt;)
-            }
-            &quot;</span>,
+        <span class="macro">assert_debug_snapshot_matches</span><span class="macro">!</span>(
+        <span class="ident">do_magic_completion</span>(
+                <span class="string">r&quot;
+                pub(crate) trait SourceRoot {
+                    pub fn contains(&amp;self, file_id: FileId) -&gt; bool;
+                    pub fn module_map(&amp;self) -&gt; &amp;ModuleMap;
+                    pub fn lines(&amp;self, file_id: FileId) -&gt; &amp;LineIndex;
+                    pub fn syntax(&amp;self, file&lt;|&gt;)
+                }
+                &quot;</span>,
+        ),
+            @<span class="string">r###&quot;[
+    CompletionItem {
+        label: &quot;file_id: FileId&quot;,
+        source_range: [289; 293),
+        delete: [289; 293),
+        insert: &quot;file_id: FileId&quot;,
+        lookup: &quot;file_id&quot;
+    }
+]&quot;###</span>
         );
     }
 }
