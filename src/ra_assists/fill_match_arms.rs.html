@@ -229,15 +229,11 @@
 <span id="229">229</span>
 <span id="230">230</span>
 <span id="231">231</span>
-<span id="232">232</span>
-<span id="233">233</span>
-<span id="234">234</span>
-<span id="235">235</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Write</span>;
 
 <span class="kw">use</span> <span class="ident">hir</span>::{
-    <span class="ident">AdtDef</span>, <span class="ident">FieldSource</span>, <span class="ident">source_binder</span>,
+    <span class="ident">AdtDef</span>, <span class="ident">FieldSource</span>,
     <span class="ident">db</span>::<span class="ident">HirDatabase</span>,
 };
 <span class="kw">use</span> <span class="ident">ra_syntax</span>::<span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">AstNode</span>};
@@ -256,12 +252,8 @@
     }
 
     <span class="kw">let</span> <span class="ident">expr</span> <span class="op">=</span> <span class="ident">match_expr</span>.<span class="ident">expr</span>()<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">function</span> <span class="op">=</span>
-        <span class="ident">source_binder</span>::<span class="ident">function_from_child_node</span>(<span class="ident">ctx</span>.<span class="ident">db</span>, <span class="ident">ctx</span>.<span class="ident">frange</span>.<span class="ident">file_id</span>, <span class="ident">expr</span>.<span class="ident">syntax</span>())<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">infer_result</span> <span class="op">=</span> <span class="ident">function</span>.<span class="ident">infer</span>(<span class="ident">ctx</span>.<span class="ident">db</span>);
-    <span class="kw">let</span> <span class="ident">source_map</span> <span class="op">=</span> <span class="ident">function</span>.<span class="ident">body_source_map</span>(<span class="ident">ctx</span>.<span class="ident">db</span>);
-    <span class="kw">let</span> <span class="ident">node_expr</span> <span class="op">=</span> <span class="ident">source_map</span>.<span class="ident">node_expr</span>(<span class="ident">expr</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">match_expr_ty</span> <span class="op">=</span> <span class="ident">infer_result</span>[<span class="ident">node_expr</span>].<span class="ident">clone</span>();
+    <span class="kw">let</span> <span class="ident">analyzer</span> <span class="op">=</span> <span class="ident">hir</span>::<span class="ident">SourceAnalyzer</span>::<span class="ident">new</span>(<span class="ident">ctx</span>.<span class="ident">db</span>, <span class="ident">ctx</span>.<span class="ident">frange</span>.<span class="ident">file_id</span>, <span class="ident">expr</span>.<span class="ident">syntax</span>(), <span class="prelude-val">None</span>);
+    <span class="kw">let</span> <span class="ident">match_expr_ty</span> <span class="op">=</span> <span class="ident">analyzer</span>.<span class="ident">type_of</span>(<span class="ident">ctx</span>.<span class="ident">db</span>, <span class="ident">expr</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">enum_def</span> <span class="op">=</span> <span class="ident">match_expr_ty</span>.<span class="ident">autoderef</span>(<span class="ident">ctx</span>.<span class="ident">db</span>).<span class="ident">find_map</span>(<span class="op">|</span><span class="ident">ty</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">ty</span>.<span class="ident">as_adt</span>() {
         <span class="prelude-val">Some</span>((<span class="ident">AdtDef</span>::<span class="ident">Enum</span>(<span class="ident">e</span>), <span class="kw">_</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">e</span>),
         <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,

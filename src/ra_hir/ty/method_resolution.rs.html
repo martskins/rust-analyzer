@@ -390,7 +390,7 @@
 <span class="kw">impl</span> <span class="ident">Ty</span> {
     <span class="doccomment">/// Look up the method with the given name, returning the actual autoderefed</span>
     <span class="doccomment">/// receiver type (but without autoref applied yet).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lookup_method</span>(
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">lookup_method</span>(
         <span class="self">self</span>,
         <span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">HirDatabase</span>,
         <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">Name</span>,
