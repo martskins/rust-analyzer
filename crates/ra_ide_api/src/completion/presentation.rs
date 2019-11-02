@@ -2,7 +2,7 @@
 
 use hir::{db::HirDatabase, Docs, HasSource, HirDisplay, ScopeDef, Ty, TypeWalk};
 use join_to_string::join;
-use ra_syntax::ast::NameOwner;
+use ra_syntax::ast::{AttrsOwner, NameOwner};
 use test_utils::tested_by;
 
 use crate::completion::{
@@ -170,6 +170,10 @@ impl Completions {
         };
 
         let ast_node = macro_.source(ctx.db).ast;
+        if is_unstable(&ast_node) {
+            return;
+        }
+
         let detail = macro_label(&ast_node);
 
         let docs = macro_.docs(ctx.db);
@@ -279,6 +283,10 @@ impl Completions {
     }
 }
 
+fn is_unstable(node: &impl AttrsOwner) -> bool {
+    node.attrs().filter_map(|x| x.simple_name()).any(|x| x == "unstable")
+}
+
 fn has_non_default_type_params(def: hir::GenericDef, db: &db::RootDatabase) -> bool {
     let subst = db.generic_defaults(def);
     subst.iter().any(|ty| ty == &Ty::Unknown)
@@ -293,6 +301,81 @@ mod tests {
 
     fn do_reference_completion(code: &str) -> Vec<CompletionItem> {
         do_completion(code, CompletionKind::Reference)
+    }
+
+    #[test]
+    fn skips_unstable_macros_in_completion_item_list_inside_main() {
+        assert_debug_snapshot!(
+            do_reference_completion(
+                r#"
+                //- /main.rs
+                macro_rules! foo {
+                    () => {}
+                }
+
+                #[unstable(feature = "", issue = "0", reason = "just because")]
+                macro_rules! foo_bar {
+                    () => {}
+                }
+
+                fn main() {
+                    fo<|>
+                }
+                "#
+            ),
+            @r##"[
+    CompletionItem {
+        label: "foo!",
+        source_range: [152; 154),
+        delete: [152; 154),
+        insert: "foo!($0)",
+        kind: Macro,
+        detail: "macro_rules! foo",
+    },
+    CompletionItem {
+        label: "main()",
+        source_range: [152; 154),
+        delete: [152; 154),
+        insert: "main()$0",
+        kind: Function,
+        lookup: "main",
+        detail: "fn main()",
+    },
+]"##
+        );
+    }
+
+    #[test]
+    fn skips_unstable_macros_in_completion_item_list() {
+        assert_debug_snapshot!(
+            do_reference_completion(
+                r#"
+                //- /main.rs
+                macro_rules! foo {
+                    () => {}
+                }
+
+                #[unstable(feature = "", issue = "0", reason = "just because")]
+                macro_rules! bar {
+                    () => {}
+                }
+
+                fn foo() {}
+
+                <|>
+                "#
+            ),
+            @r##"[
+    CompletionItem {
+        label: "foo!",
+        source_range: [144; 144),
+        delete: [144; 144),
+        insert: "foo!($0)",
+        kind: Macro,
+        detail: "macro_rules! foo",
+    },
+]"##
+        );
     }
 
     #[test]
